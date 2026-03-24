@@ -5,17 +5,18 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Curso {
+public class Course {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer IdCurso;
+    private Integer courseId;
 
     @Column(nullable = false, length = 100)
-    private String NomeCurso;
+    private String courseName;
 
     @Column(nullable = false, length = 40)
-    private String PeriodoCurso;
+    private String period;
 
     @Column(nullable = false, length = 40)
-    private Integer CargaHorariaCurso;
+    private Integer workloadHours;
 }

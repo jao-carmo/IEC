@@ -6,37 +6,37 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Getter;
 
 @Entity
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Aluno {
+public class Student {
 
     //Attributes
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idAluno;
+    private Integer studentId;
 
     @Column(nullable = false, length = 40)
-    private String nomeAluno;
+    private String fullName;
 
     @Column(length = 100)
-    private String emailAluno;
+    private String email;
 
     @Column(nullable = false, length = 11)
-    private String telefoneAluno;
+    private String phone;
 
     @Column(nullable = false, length = 100)
-    private String enderecoAluno;
+    private String address;
 
     @Column(nullable = false, length = 11)
-    private String cpfAluno;
+    private String cpf;
 
     @Column(nullable = false)
-    private String raAluno;
+    private String registrationNumber;
 }
