@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Student List</title>
+</head>
+<body>
+    <h1 style="text-align: center;">Student List</h1>
+    <h3 style="text-align: center;">
+        <a th:href="@{/student/new}">Add new student</a>
+    </h3>
+    <table align="center" border="1">
+        <tr>
+            <th>Name</th>
+            <th>E-mail</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>CPF</th>
+            <th>RA</th>
+            <th colspan="2">Actions</th>
+        </tr>
+        <tr th:each="student : ${student}">
+            <td th:text="${student.fullName}">*</td>
+            <td th:text="${student.email}">*</td>
+            <td th:text="${student.phone}">*</td>
+            <td th:text="${student.address}">*</td>
+            <td th:text="${student.cpf}">*</td>
+            <td th:text="${student.registrationNumber}">*</td>
+            <td><a th:href="@{/student/edit/{studentId}(studentId=${student.studentId})}">Edit</a></td>
+            <td><a th:href="@{/student/delete/{studentId}(studentId=${student.studentId})}">Delete</a></td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/students")
+@RequestMapping("/student")
 public class StudentController {
 
-    // Dependency injection of the student's service.
+    // Dependency injection of the student service.
     @Autowired
     private StudentService studentService;
 
@@ -24,13 +24,20 @@ public class StudentController {
     @PostMapping("/save")
     public String save(@ModelAttribute Student student) {
         studentService.save(student);
-        return "redirect:/students/list";
+        return "redirect:/student/list";
     }
 
-    // Method to listing all student's.
+    // Method to list all student records.
     @GetMapping("/list")
     public String list(Model model) {
-        model.addAttribute("students", studentService.findAll());
-        return "student/listStudents";
+        model.addAttribute("student", studentService.findAll());
+        return "student/studentList";
+    }
+
+    // Method to show the form to create a new student.
+    @GetMapping("/new")
+    public String newForm(Model model) {
+        model.addAttribute("student", new Student());
+        return "student/studentForm";
     }
 }
