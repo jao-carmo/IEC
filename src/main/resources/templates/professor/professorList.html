@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>FatecADS | Students</title>
+    <title>FatecADS | Professors</title>
 </head>
 <body>
 <div class="bg-orb orb-one"></div>
@@ -16,11 +16,11 @@
         <p class="eyebrow">Operational dashboard</p>
         <div class="page-header">
             <div>
-                <h1 class="page-title">Student management</h1>
-                <p class="subtitle">Review, edit, and maintain records with enterprise clarity and data-driven readability.</p>
+                <h1 class="page-title">Professor management</h1>
+                <p class="subtitle">Review, edit, and maintain professor records with enterprise clarity and data-driven readability.</p>
             </div>
             <div class="actions">
-                <a class="button-link button-link-glow" th:href="@{/student/new}">New student</a>
+                <a class="button-link button-link-glow" th:href="@{/professor/new}">New professor</a>
                 <a class="button-link button-link-ghost" th:href="@{/fatecads}">Home page</a>
             </div>
         </div>
@@ -29,7 +29,7 @@
     <section class="card-grid mt-20" aria-label="List indicators">
         <article class="stat-card neo-surface">
             <p class="stat-label">Total records</p>
-            <p class="stat-value" th:text="${#lists.size(student)}">0</p>
+            <p class="stat-value" th:text="${#lists.size(professor)}">0</p>
         </article>
         <article class="stat-card neo-surface">
             <p class="stat-label">Work mode</p>
@@ -41,32 +41,28 @@
         </article>
     </section>
 
-    <section class="table-wrap table-wrap-glass mt-20 brutal-edge" aria-label="Student table">
+    <section class="table-wrap table-wrap-glass mt-20 brutal-edge" aria-label="Professor table">
         <table class="data-table">
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Email</th>
                 <th>Phone</th>
-                <th>Address</th>
-                <th>CPF</th>
-                <th>RA</th>
+                <th>Graduation</th>
+                <th>RM</th>
                 <th colspan="2">Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:if="${#lists.isEmpty(student)}">
-                <td colspan="8" class="empty-state">No students registered yet. Click "New student" to get started.</td>
+            <tr th:if="${#lists.isEmpty(professor)}">
+                <td colspan="6" class="empty-state">No professors registered yet. Click "New professor" to get started.</td>
             </tr>
-            <tr th:each="student : ${student}">
-                <td th:text="${student.fullName}">*</td>
-                <td th:text="${student.email} ?: '-'">*</td>
-                <td th:text="${student.phone}">*</td>
-                <td th:text="${student.address}">*</td>
-                <td th:text="${student.cpf}">*</td>
-                <td th:text="${student.registrationNumber}">*</td>
-                <td><a class="table-action" th:href="@{/student/edit/{studentId}(studentId=${student.studentId})}">Edit</a></td>
-                <td><a class="table-action table-action-danger" th:href="@{/student/delete/{studentId}(studentId=${student.studentId})}">Delete</a></td>
+            <tr th:each="professor : ${professor}">
+                <td th:text="${professor.fullName}">*</td>
+                <td th:text="${professor.phone}">*</td>
+                <td th:text="${professor.graduation}">*</td>
+                <td th:text="${professor.RM}">*</td>
+                <td><a class="table-action" th:href="@{/professor/edit/{professorId}(professorId=${professor.professorId})}">Edit</a></td>
+                <td><a class="table-action table-action-danger" th:href="@{/professor/delete/{professorId}(professorId=${professor.professorId})}">Delete</a></td>
             </tr>
             </tbody>
         </table>
@@ -74,3 +70,4 @@
 </main>
 </body>
 </html>
+

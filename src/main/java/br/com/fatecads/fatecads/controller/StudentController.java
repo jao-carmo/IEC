@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/student")
@@ -38,6 +35,21 @@ public class StudentController {
     @GetMapping("/new")
     public String newForm(Model model) {
         model.addAttribute("student", new Student());
+        return "student/studentForm";
+    }
+
+    // Method to delete a student record by ID.
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        studentService.deleteById(id);
+        return "redirect:/student/list";
+    }
+
+    // Method to edit a student record by ID.
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Integer id, Model model) {
+        Student student = studentService.findById(id);
+        model.addAttribute("student", student);
         return "student/studentForm";
     }
 }

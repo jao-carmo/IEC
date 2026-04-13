@@ -1,14 +1,75 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>System FatecADS</title>
+    <title>FatecADS | Academic Platform</title>
 </head>
 <body>
-    <h1 style="text-align: center;">Welcome to the FatecADS System</h1>
-    <h3 style="text-align: center;"><a href="/student/list">Manage student</a></h3>
+<div class="bg-orb orb-one"></div>
+<div class="bg-orb orb-two"></div>
+
+<main class="container app-shell fade-in-up">
+    <header class="top-nav glass-panel">
+        <div>
+            <p class="eyebrow">FatecADS Platform</p>
+            <strong class="brand-title">Academic Command Center</strong>
+        </div>
+        <nav class="actions" aria-label="Main navigation">
+            <a class="button-link button-link-ghost" th:href="@{/fatecads}">Home</a>
+            <a class="button-link" th:href="@{/student/list}">Student dashboard</a>
+            <a class="button-link" th:href="@{/course/list}">Course dashboard</a>
+            <a class="button-link" th:href="@{/professor/list}">Professor dashboard</a>
+            <a class="button-link" th:href="@{/subject/list}">Subject dashboard</a>
+        </nav>
+    </header>
+
+    <section class="hero-grid">
+        <article class="hero-card hero-card-xl brutal-edge">
+            <p class="eyebrow">Enterprise UX + Data-driven</p>
+            <h1 class="page-title">Clear, fast, and elegant academic management.</h1>
+            <p class="subtitle">A single flow for registration, review, and maintenance of student, course, professor, and subject records with instant readability, productivity focus, and accessibility.</p>
+            <div class="hero-pill-row">
+                <span class="hero-pill">Minimalist</span>
+                <span class="hero-pill">Material + HIG</span>
+                <span class="hero-pill">A11y-first</span>
+                <span class="hero-pill">Native Dark Mode</span>
+            </div>
+            <div class="actions mt-24">
+                <a class="button-link button-link-glow" th:href="@{/student/list}">Manage students</a>
+                <a class="button-link button-link-glow" th:href="@{/course/list}">Manage courses</a>
+                <a class="button-link button-link-glow" th:href="@{/professor/list}">Manage professors</a>
+                <a class="button-link button-link-glow" th:href="@{/subject/list}">Manage subjects</a>
+                <a class="button-link button-link-ghost" th:href="@{/student/new}">New student</a>
+                <a class="button-link button-link-ghost" th:href="@{/course/new}">New course</a>
+                <a class="button-link button-link-ghost" th:href="@{/professor/new}">New professor</a>
+                <a class="button-link button-link-ghost" th:href="@{/subject/new}">New subject</a>
+            </div>
+        </article>
+
+        <aside class="glass-panel metric-panel" aria-label="Key indicators">
+            <p class="eyebrow">Operational overview</p>
+            <div class="metric-stack">
+                <div class="metric-card neo-surface">
+                    <span class="metric-label">Records</span>
+                    <strong class="metric-value">100%</strong>
+                    <small>centralized in one panel</small>
+                </div>
+                <div class="metric-card neo-surface">
+                    <span class="metric-label">Workflow</span>
+                    <strong class="metric-value">2 clicks</strong>
+                    <small>to edit records</small>
+                </div>
+                <div class="metric-card neo-surface">
+                    <span class="metric-label">Experience</span>
+                    <strong class="metric-value">Responsive</strong>
+                    <small>mobile-first and adaptive</small>
+                </div>
+            </div>
+        </aside>
+    </section>
+</main>
 </body>
 </html>

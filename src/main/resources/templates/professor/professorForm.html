@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>FatecADS | Student Registration</title>
+    <title>FatecADS | Professor Registration</title>
 </head>
 <body>
 <div class="bg-orb orb-one"></div>
@@ -16,13 +16,13 @@
         <div class="page-header">
             <div>
                 <p class="eyebrow">Smart form</p>
-                <h1 class="page-title">Student registration</h1>
+                <h1 class="page-title">Professor registration</h1>
             </div>
             <div class="actions">
-                <a class="button-link button-link-ghost" th:href="@{/student/list}">Back to list</a>
+                <a class="button-link button-link-ghost" th:href="@{/professor/list}">Back to list</a>
             </div>
         </div>
-        <p class="subtitle">Fill in the essential fields with quality data to avoid rework and keep academic records consistent.</p>
+        <p class="subtitle">Fill in the essential fields with quality data to keep academic records consistent and traceable.</p>
     </section>
 
     <p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message mt-16" role="alert"></p>
@@ -33,36 +33,31 @@
             <h2 class="side-note-title">Filling standards</h2>
             <p class="side-note-text">Use real and verified data. Required fields ensure traceability and reduce registration inconsistencies.</p>
             <div class="hero-pill-row mt-16">
-                <span class="hero-pill">Valid CPF</span>
-                <span class="hero-pill">Unique RA</span>
-                <span class="hero-pill">Updated contact</span>
+                <span class="hero-pill">Full legal name</span>
+                <span class="hero-pill">Updated phone</span>
+                <span class="hero-pill">Valid RM</span>
             </div>
         </aside>
 
-        <form class="form-card brutal-edge" th:action="@{/student/save}" method="post" th:object="${student}">
-            <input type="hidden" th:field="*{studentId}" />
+        <form class="form-card brutal-edge" th:action="@{/professor/save}" method="post" th:object="${professor}">
+            <input type="hidden" th:field="*{professorId}" />
 
             <label for="fullName">Full name</label>
             <input id="fullName" type="text" th:field="*{fullName}" maxlength="40" required autocomplete="name" placeholder="Example: Maria Silva Santos">
 
-            <label for="email">E-mail</label>
-            <input id="email" type="email" th:field="*{email}" maxlength="100" autocomplete="email" placeholder="nome@dominio.com">
-
             <label for="phone">Phone</label>
             <input id="phone" type="text" th:field="*{phone}" maxlength="15" required autocomplete="tel" placeholder="(11) 99999-9999">
 
-            <label for="address">Address</label>
-            <input id="address" type="text" th:field="*{address}" maxlength="100" required autocomplete="street-address" placeholder="Street, number, and district">
+            <label for="graduation">Graduation</label>
+            <input id="graduation" type="text" th:field="*{graduation}" maxlength="100" required placeholder="Example: Computer Science">
 
-            <label for="cpf">CPF</label>
-            <input id="cpf" type="text" th:field="*{cpf}" maxlength="14" required inputmode="numeric" placeholder="000.000.000-00">
+            <label for="rm">Registration (RM)</label>
+            <input id="rm" type="text" th:field="*{RM}" required placeholder="Example: RM2026001">
 
-            <label for="registrationNumber">Academic registration (RA)</label>
-            <input id="registrationNumber" type="text" th:field="*{registrationNumber}" required placeholder="Example: 202612345">
-
-            <button type="submit">Save student</button>
+            <button type="submit">Save professor</button>
         </form>
     </section>
 </main>
 </body>
 </html>
+

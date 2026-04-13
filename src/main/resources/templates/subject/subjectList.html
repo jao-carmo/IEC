@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>FatecADS | Students</title>
+    <title>FatecADS | Subjects</title>
 </head>
 <body>
 <div class="bg-orb orb-one"></div>
@@ -16,11 +16,11 @@
         <p class="eyebrow">Operational dashboard</p>
         <div class="page-header">
             <div>
-                <h1 class="page-title">Student management</h1>
-                <p class="subtitle">Review, edit, and maintain records with enterprise clarity and data-driven readability.</p>
+                <h1 class="page-title">Subject management</h1>
+                <p class="subtitle">Review, edit, and maintain subject records with enterprise clarity and data-driven readability.</p>
             </div>
             <div class="actions">
-                <a class="button-link button-link-glow" th:href="@{/student/new}">New student</a>
+                <a class="button-link button-link-glow" th:href="@{/subject/new}">New subject</a>
                 <a class="button-link button-link-ghost" th:href="@{/fatecads}">Home page</a>
             </div>
         </div>
@@ -29,7 +29,7 @@
     <section class="card-grid mt-20" aria-label="List indicators">
         <article class="stat-card neo-surface">
             <p class="stat-label">Total records</p>
-            <p class="stat-value" th:text="${#lists.size(student)}">0</p>
+            <p class="stat-value" th:text="${#lists.size(subject)}">0</p>
         </article>
         <article class="stat-card neo-surface">
             <p class="stat-label">Work mode</p>
@@ -41,32 +41,26 @@
         </article>
     </section>
 
-    <section class="table-wrap table-wrap-glass mt-20 brutal-edge" aria-label="Student table">
+    <section class="table-wrap table-wrap-glass mt-20 brutal-edge" aria-label="Subject table">
         <table class="data-table">
             <thead>
             <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>CPF</th>
-                <th>RA</th>
+                <th>Subject name</th>
+                <th>Code</th>
+                <th>Workload hours</th>
                 <th colspan="2">Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:if="${#lists.isEmpty(student)}">
-                <td colspan="8" class="empty-state">No students registered yet. Click "New student" to get started.</td>
+            <tr th:if="${#lists.isEmpty(subject)}">
+                <td colspan="5" class="empty-state">No subjects registered yet. Click "New subject" to get started.</td>
             </tr>
-            <tr th:each="student : ${student}">
-                <td th:text="${student.fullName}">*</td>
-                <td th:text="${student.email} ?: '-'">*</td>
-                <td th:text="${student.phone}">*</td>
-                <td th:text="${student.address}">*</td>
-                <td th:text="${student.cpf}">*</td>
-                <td th:text="${student.registrationNumber}">*</td>
-                <td><a class="table-action" th:href="@{/student/edit/{studentId}(studentId=${student.studentId})}">Edit</a></td>
-                <td><a class="table-action table-action-danger" th:href="@{/student/delete/{studentId}(studentId=${student.studentId})}">Delete</a></td>
+            <tr th:each="subject : ${subject}">
+                <td th:text="${subject.subjectName}">*</td>
+                <td th:text="${subject.code}">*</td>
+                <td th:text="${subject.workloadHours}">*</td>
+                <td><a class="table-action" th:href="@{/subject/edit/{subjectId}(subjectId=${subject.subjectId})}">Edit</a></td>
+                <td><a class="table-action table-action-danger" th:href="@{/subject/delete/{subjectId}(subjectId=${subject.subjectId})}">Delete</a></td>
             </tr>
             </tbody>
         </table>
@@ -74,3 +68,4 @@
 </main>
 </body>
 </html>
+

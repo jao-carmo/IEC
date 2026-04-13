@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FatecADS | Subject Registration</title>
+</head>
+<body>
+<div class="bg-orb orb-one"></div>
+<div class="bg-orb orb-two"></div>
+
+<main class="container app-shell fade-in-up">
+    <section class="hero-card hero-card-compact glass-panel">
+        <div class="page-header">
+            <div>
+                <p class="eyebrow">Smart form</p>
+                <h1 class="page-title">Subject registration</h1>
+            </div>
+            <div class="actions">
+                <a class="button-link button-link-ghost" th:href="@{/subject/list}">Back to list</a>
+            </div>
+        </div>
+        <p class="subtitle">Fill in the essential subject fields to keep curriculum planning consistent and easy to maintain.</p>
+    </section>
+
+    <p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message mt-16" role="alert"></p>
+
+    <section class="form-layout mt-20">
+        <aside class="side-note glass-panel">
+            <p class="eyebrow">Best practices</p>
+            <h2 class="side-note-title">Planning standards</h2>
+            <p class="side-note-text">Use clear naming, standardized codes, and approved workloads. Required fields improve traceability and reduce operational errors.</p>
+            <div class="hero-pill-row mt-16">
+                <span class="hero-pill">Clear naming</span>
+                <span class="hero-pill">Unique code</span>
+                <span class="hero-pill">Approved workload</span>
+            </div>
+        </aside>
+
+        <form class="form-card brutal-edge" th:action="@{/subject/save}" method="post" th:object="${subject}">
+            <input type="hidden" th:field="*{subjectId}" />
+
+            <label for="subjectName">Subject name</label>
+            <input id="subjectName" type="text" th:field="*{subjectName}" maxlength="100" required placeholder="Example: Software Engineering">
+
+            <label for="code">Code</label>
+            <input id="code" type="text" th:field="*{code}" maxlength="15" required placeholder="Example: ADS205">
+
+            <label for="workloadHours">Workload hours</label>
+            <input id="workloadHours" type="number" min="1" step="1" th:field="*{workloadHours}" required placeholder="Example: 80">
+
+            <button type="submit">Save subject</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>
+
