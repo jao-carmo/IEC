@@ -60,6 +60,15 @@
             <label for="registrationNumber">Academic registration (RA)</label>
             <input id="registrationNumber" type="text" th:field="*{registrationNumber}" required placeholder="Example: 202612345">
 
+            <label for="course">Course</label>
+            <select id="course" th:field="*{course}">
+                <option value="" disabled selected>Choose your course</option>
+                <option th:each="course : ${course}"
+                        th:value="${course.courseId}"
+                        th:text="${course.courseName}">
+                </option>
+
+            </select>
             <button type="submit">Save student</button>
         </form>
     </section>

@@ -19,4 +19,12 @@ public class Subject {
 
     @Column(nullable = false, length = 40)
     private Integer workloadHours;
+
+    @ManyToOne
+    @JoinColumn(name = "courseId_fk")
+    private Course course;
+
+    @ManyToOne
+    @JoinColumn(name = "professorId_fk")
+    private Professor professor;
 }

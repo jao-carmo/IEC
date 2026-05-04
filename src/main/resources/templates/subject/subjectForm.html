@@ -51,6 +51,24 @@
             <label for="workloadHours">Workload hours</label>
             <input id="workloadHours" type="number" min="1" step="1" th:field="*{workloadHours}" required placeholder="Example: 80">
 
+            <label for="course">Course</label>
+            <select id="course" th:field="*{course}" required>
+                <option value="" disabled selected>Choose your course</option>
+                <option th:each="course : ${course}"
+                        th:value="${course.courseId}"
+                        th:text="${course.courseName}">
+                </option>
+            </select>
+
+            <label for="professor">Professor</label>
+            <select id="professor" th:field="*{professor}" required>
+                <option value="" disabled selected>Choose your professor</option>
+                <option th:each="professor : ${professor}"
+                        th:value="${professor.professorId}"
+                        th:text="${professor.fullName}">
+                </option>
+            </select>
+
             <button type="submit">Save subject</button>
         </form>
     </section>

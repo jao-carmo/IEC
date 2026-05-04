@@ -2,6 +2,7 @@ package br.com.fatecads.fatecads.controller;
 
 import br.com.fatecads.fatecads.entity.Student;
 import br.com.fatecads.fatecads.service.StudentService;
+import br.com.fatecads.fatecads.service.CourseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,10 @@ public class StudentController {
     // Dependency injection of the student service.
     @Autowired
     private StudentService studentService;
+
+    // Dependency injection of the course service.
+    @Autowired
+    private CourseService courseService;
 
     // Method to save a student.
     @PostMapping("/save")
@@ -35,6 +40,7 @@ public class StudentController {
     @GetMapping("/new")
     public String newForm(Model model) {
         model.addAttribute("student", new Student());
+        model.addAttribute("course", courseService.findAll());
         return "student/studentForm";
     }
 
@@ -50,6 +56,7 @@ public class StudentController {
     public String edit(@PathVariable Integer id, Model model) {
         Student student = studentService.findById(id);
         model.addAttribute("student", student);
+        model.addAttribute("course", courseService.findAll());
         return "student/studentForm";
     }
 }

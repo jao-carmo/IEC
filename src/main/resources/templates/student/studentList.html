@@ -51,12 +51,13 @@
                 <th>Address</th>
                 <th>CPF</th>
                 <th>RA</th>
+                <th>Course</th>
                 <th colspan="2">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(student)}">
-                <td colspan="8" class="empty-state">No students registered yet. Click "New student" to get started.</td>
+                <td colspan="9" class="empty-state">No students registered yet. Click "New student" to get started.</td>
             </tr>
             <tr th:each="student : ${student}">
                 <td th:text="${student.fullName}">*</td>
@@ -65,6 +66,7 @@
                 <td th:text="${student.address}">*</td>
                 <td th:text="${student.cpf}">*</td>
                 <td th:text="${student.registrationNumber}">*</td>
+                <td th:text="${student.course != null ? student.course.courseName : '-'}">*</td>
                 <td><a class="table-action" th:href="@{/student/edit/{studentId}(studentId=${student.studentId})}">Edit</a></td>
                 <td><a class="table-action table-action-danger" th:href="@{/student/delete/{studentId}(studentId=${student.studentId})}">Delete</a></td>
             </tr>

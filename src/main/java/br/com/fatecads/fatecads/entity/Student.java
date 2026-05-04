@@ -1,10 +1,7 @@
 package br.com.fatecads.fatecads.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +25,7 @@ public class Student {
     @Column(length = 100)
     private String email;
 
-    @Column(nullable = false, length = 11)
+    @Column(nullable = false, length = 15)
     private String phone;
 
     @Column(nullable = false, length = 100)
@@ -39,4 +36,8 @@ public class Student {
 
     @Column(nullable = false)
     private String registrationNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "courseId_fk")
+    private Course course;
 }

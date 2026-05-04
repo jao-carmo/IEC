@@ -48,17 +48,21 @@
                 <th>Subject name</th>
                 <th>Code</th>
                 <th>Workload hours</th>
+                <th>Course</th>
+                <th>Professor</th>
                 <th colspan="2">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(subject)}">
-                <td colspan="5" class="empty-state">No subjects registered yet. Click "New subject" to get started.</td>
+                <td colspan="7" class="empty-state">No subjects registered yet. Click "New subject" to get started.</td>
             </tr>
             <tr th:each="subject : ${subject}">
                 <td th:text="${subject.subjectName}">*</td>
                 <td th:text="${subject.code}">*</td>
                 <td th:text="${subject.workloadHours}">*</td>
+                <td th:text="${subject.course != null ? subject.course.courseName : '-'}">*</td>
+                <td th:text="${subject.professor != null ? subject.professor.fullName : '-'}">*</td>
                 <td><a class="table-action" th:href="@{/subject/edit/{subjectId}(subjectId=${subject.subjectId})}">Edit</a></td>
                 <td><a class="table-action table-action-danger" th:href="@{/subject/delete/{subjectId}(subjectId=${subject.subjectId})}">Delete</a></td>
             </tr>
