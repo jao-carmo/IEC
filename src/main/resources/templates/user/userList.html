@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FatecADS | Users</title>
+</head>
+<body>
+<div class="bg-orb orb-one"></div>
+<div class="bg-orb orb-two"></div>
+
+<main class="container app-shell fade-in-up">
+    <section class="hero-card hero-card-compact glass-panel">
+        <p class="eyebrow">Operational dashboard</p>
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">User management</h1>
+                <p class="subtitle">Manage access profiles with clear visibility and data-driven consistency.</p>
+            </div>
+            <div class="actions">
+                <a class="button-link button-link-glow" th:href="@{/user/new}">New user</a>
+                <a class="button-link button-link-ghost" th:href="@{/fatecads}">Home page</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="card-grid mt-20" aria-label="List indicators">
+        <article class="stat-card neo-surface">
+            <p class="stat-label">Total records</p>
+            <p class="stat-value" th:text="${#lists.size(user)}">0</p>
+        </article>
+        <article class="stat-card neo-surface">
+            <p class="stat-label">Work mode</p>
+            <p class="stat-value">Data-first</p>
+        </article>
+        <article class="stat-card neo-surface">
+            <p class="stat-label">Interface</p>
+            <p class="stat-value">Responsive</p>
+        </article>
+    </section>
+
+    <section class="table-wrap table-wrap-glass mt-20 brutal-edge" aria-label="User table">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Login</th>
+                <th>Role</th>
+                <th colspan="2">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(user)}">
+                <td colspan="6" class="empty-state">No users registered yet. Click "New user" to get started.</td>
+            </tr>
+            <tr th:each="user : ${user}">
+                <td th:text="${user.fullName}">*</td>
+                <td th:text="${user.email}">*</td>
+                <td th:text="${user.login}">*</td>
+                <td th:text="${user.role}">*</td>
+                <td><a class="table-action" th:href="@{/user/edit/{userId}(userId=${user.userId})}">Edit</a></td>
+                <td><a class="table-action table-action-danger" th:href="@{/user/delete/{userId}(userId=${user.userId})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
+
