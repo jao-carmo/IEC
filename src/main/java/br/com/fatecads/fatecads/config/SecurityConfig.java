@@ -13,20 +13,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   org.springframework.security.authentication.dao.DaoAuthenticationProvider authenticationProvider)
-            throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authenticationProvider(authenticationProvider)
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/login",
                                 "/fatecads",
                                 "/css/**",
                                 "/images/**",
-                                "/user/**",
-                                "/error",
-                                "/favicon.ico")
+                                "/usuarios/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
@@ -49,16 +45,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
             throws Exception {
         return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public org.springframework.security.authentication.dao.DaoAuthenticationProvider authenticationProvider(
-            UserDatailsServiceImpl userDetailsService,
-            PasswordEncoder passwordEncoder) {
-        org.springframework.security.authentication.dao.DaoAuthenticationProvider provider =
-                new org.springframework.security.authentication.dao.DaoAuthenticationProvider(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder);
-        return provider;
     }
 
 }

@@ -1,5 +1,5 @@
 package br.com.fatecads.fatecads.config;
 
-public class UserDetailsImpl {
+public class UserDetailsServiceImpl {
 
 }
