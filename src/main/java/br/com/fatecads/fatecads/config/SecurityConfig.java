@@ -15,14 +15,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/login",
                                 "/fatecads",
+                                "/forgot-password",
+                                "/reset-password",
                                 "/css/**",
                                 "/images/**",
-                                "/usuarios/**")
+                                "/users/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
@@ -46,5 +47,4 @@ public class SecurityConfig {
             throws Exception {
         return config.getAuthenticationManager();
     }
-
 }

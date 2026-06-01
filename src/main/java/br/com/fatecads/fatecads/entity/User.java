@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 @Setter
@@ -33,8 +35,13 @@ public class User {
     @Column(nullable = false, length = 40)
     private String login;
 
-    @Column(nullable = false, length = 40)
+    @Column(nullable = false, length = 255)
     private String password;
 
     private String role = "ROLE_USER";
+
+    @Column(length = 80)
+    private String resetToken;
+
+    private LocalDateTime resetTokenExpiry;
 }

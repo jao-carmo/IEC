@@ -1,75 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{/css/app.css}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>FatecADS | Academic Platform</title>
+    <title>FatecADS - Academic System</title>
+    <link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
 <div class="bg-orb orb-one"></div>
 <div class="bg-orb orb-two"></div>
 
-<main class="container app-shell fade-in-up">
-    <header class="top-nav glass-panel">
-        <div>
-            <p class="eyebrow">FatecADS Platform</p>
-            <strong class="brand-title">Academic Command Center</strong>
+<div class="container app-shell">
+    <nav class="top-nav glass-panel">
+        <span class="brand-title">FatecADS</span>
+        <span class="text-muted">Academic System</span>
+    </nav>
+
+    <section class="hero-card hero-card-xl fade-in-up">
+        <p class="eyebrow">Academic platform</p>
+        <h1 class="page-title">FatecADS Academic System</h1>
+        <p class="subtitle">Secure access, structured data, and a consistent experience for managing academic records.</p>
+
+        <div class="hero-pill-row">
+            <span class="hero-pill">Secure access</span>
+            <span class="hero-pill">Data-driven UI</span>
+            <span class="hero-pill">Responsive design</span>
         </div>
-        <nav class="actions" aria-label="Main navigation">
-            <a class="button-link button-link-ghost" th:href="@{/fatecads}">Home</a>
-            <a class="button-link" th:href="@{/student/list}">Student dashboard</a>
-            <a class="button-link" th:href="@{/course/list}">Course dashboard</a>
-            <a class="button-link" th:href="@{/professor/list}">Professor dashboard</a>
-            <a class="button-link" th:href="@{/subject/list}">Subject dashboard</a>
-        </nav>
-    </header>
 
-    <section class="hero-grid">
-        <article class="hero-card hero-card-xl brutal-edge">
-            <p class="eyebrow">Enterprise UX + Data-driven</p>
-            <h1 class="page-title">Clear, fast, and elegant academic management.</h1>
-            <p class="subtitle">A single flow for registration, review, and maintenance of student, course, professor, and subject records with instant readability, productivity focus, and accessibility.</p>
-            <div class="hero-pill-row">
-                <span class="hero-pill">Minimalist</span>
-                <span class="hero-pill">Material + HIG</span>
-                <span class="hero-pill">A11y-first</span>
-                <span class="hero-pill">Native Dark Mode</span>
-            </div>
-            <div class="actions mt-24">
-                <a class="button-link button-link-glow" th:href="@{/student/list}">Manage students</a>
-                <a class="button-link button-link-glow" th:href="@{/course/list}">Manage courses</a>
-                <a class="button-link button-link-glow" th:href="@{/professor/list}">Manage professors</a>
-                <a class="button-link button-link-glow" th:href="@{/subject/list}">Manage subjects</a>
-                <a class="button-link button-link-ghost" th:href="@{/student/new}">New student</a>
-                <a class="button-link button-link-ghost" th:href="@{/course/new}">New course</a>
-                <a class="button-link button-link-ghost" th:href="@{/professor/new}">New professor</a>
-                <a class="button-link button-link-ghost" th:href="@{/subject/new}">New subject</a>
-            </div>
-        </article>
+        <div class="spacer-24"></div>
 
-        <aside class="glass-panel metric-panel" aria-label="Key indicators">
-            <p class="eyebrow">Operational overview</p>
-            <div class="metric-stack">
-                <div class="metric-card neo-surface">
-                    <span class="metric-label">Records</span>
-                    <strong class="metric-value">100%</strong>
-                    <small>centralized in one panel</small>
-                </div>
-                <div class="metric-card neo-surface">
-                    <span class="metric-label">Workflow</span>
-                    <strong class="metric-value">2 clicks</strong>
-                    <small>to edit records</small>
-                </div>
-                <div class="metric-card neo-surface">
-                    <span class="metric-label">Experience</span>
-                    <strong class="metric-value">Responsive</strong>
-                    <small>mobile-first and adaptive</small>
-                </div>
-            </div>
-        </aside>
+        <div class="actions">
+            <form action="/login" method="get">
+                <button type="submit" class="button-link button-link-glow">System Access</button>
+            </form>
+
+            <form action="/users/create" method="get">
+                <button type="submit" class="button-link button-link-ghost">Register</button>
+            </form>
+        </div>
     </section>
-</main>
+</div>
 </body>
 </html>

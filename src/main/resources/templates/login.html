@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in | FatecADS</title>
+    <title>System Access</title>
     <link rel="stylesheet" href="/css/app.css">
 </head>
 <body class="app-home">
@@ -13,41 +13,61 @@
 <div class="container app-shell">
     <nav class="top-nav glass-panel">
         <span class="brand-title">FatecADS</span>
-        <span class="text-muted">Secure access</span>
+        <span class="text-muted">System Access</span>
     </nav>
 
     <section class="hero-card hero-card-compact fade-in-up">
         <p class="eyebrow">Welcome back</p>
-        <h1 class="page-title">Sign in to continue</h1>
-        <p class="subtitle">Use your login and password to access the platform.</p>
+        <h1 class="page-title">System Access</h1>
+        <p class="subtitle">Enter your credentials to continue.</p>
 
         <div class="spacer-24"></div>
 
-        <div th:if="${param.error}" class="error-message">Invalid credentials. Please try again.</div>
-        <div th:if="${param.logout}" class="badge badge-success">You have been signed out.</div>
-        <div th:if="${param.registered}" class="badge badge-violet">Account created. Sign in to continue.</div>
+        <div th:if="${param.error}" class="error-message">Invalid login</div>
+        <div th:if="${param.logout}" class="badge badge-success">Successfully logged out</div>
+        <div th:if="${param.reset}" class="badge badge-success">Password updated. Please sign in.</div>
 
         <div class="spacer-24"></div>
 
-        <form th:action="@{/login}" method="post" class="form-card">
-            <label for="username">Login</label>
-            <input id="username" name="username" type="text" autocomplete="username" required>
+        <form method="post" th:action="@{/login}" class="form-card">
+            <label for="username">Username</label>
+            <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    autocomplete="username"
+                    required
+            >
 
             <label for="password">Password</label>
-            <input id="password" name="password" type="password" autocomplete="current-password" required>
+            <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+            >
 
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            <button type="submit">Sign in</button>
+            <button type="submit">Login</button>
         </form>
 
         <div class="spacer-24"></div>
 
         <div class="actions">
-            <a class="button-link button-link-ghost" href="/user/new">Create an account</a>
-            <a class="button-link" href="/fatecads">Back to landing</a>
+            <a class="button-link button-link-ghost" th:href="@{/forgot-password}">Forgot password?</a>
+        </div>
+
+        <div class="spacer-24"></div>
+
+        <div class="actions">
+            <form action="/fatecads" method="get">
+                <button type="submit" class="button-link button-link-ghost">Back to home</button>
+            </form>
         </div>
     </section>
 </div>
 </body>
 </html>
-
