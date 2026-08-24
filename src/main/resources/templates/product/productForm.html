@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Form</title>
+</head>
+<body>
+    <h1 style="text-align: center">Product Form</h1>
+    <form th:action="@{/product/save}" th:object="${product}" method="post">
+        <input type="hidden" name="ProductId" th:field="{ProductId}" />
+
+        <label for="productDescription">Product Description</label>
+        <input type="text" name="productDescription" id="productDescription" th:field="*{productDescription}" />
+
+        <label for="productPrice">Price</label>
+        <input type="text" name="productPrice" id="productPrice" th:field="*{productPrice}" />
+
+        <label for="productUnit">Unit</label>
+        <input type="text" name="productUnit" id="productUnit" th:field="*{productUnit}" />
+
+        <label for="productBrand">Brand</label>
+        <input type="text" name="productBrand" id="productBrand" th:field="*{productBrand}" />
+
+        <input type="submit" value="Save" />
+    </form>
+</body>
+</html>

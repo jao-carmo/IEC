@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Form</title>
+</head>
+<body>
+    <h1>Order Form</h1>
+    <datalist id="listStudent">
+        <option th:each="student : ${students}"
+                th:value="${student.studentId + ' - student.fullName}"></option>
+    </datalist>
+
+    <datalist id="listProduct">
+        <option th:each="product : ${products}"
+                th:value="${product.productId + ' - product.productDescription}"
+                th:attr="data-price=${product.productPrice}">
+        </option>
+    </datalist>
+
+    <h1>Order Register</h1>
+    <a th:href="@{/home}">Back</a>
+
+    <p>1. Student Identification</p>
+    <label for="student">student</label>
+    <br>
+    <input list="listStudent" id="student" placeholder="Type the student ID or name" required>
+    <br><br>
+    <p>2. Product Selection</p>
+</body>
+</html>
