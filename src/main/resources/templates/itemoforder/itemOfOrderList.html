@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FatecADS | Order Items</title>
+</head>
+<body>
+<div class="bg-orb orb-one"></div>
+<div class="bg-orb orb-two"></div>
+<form class="signout-fixed" th:action="@{/logout}" method="post">
+    <input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <button type="submit" class="button-link table-action-danger">Sign out</button>
+</form>
+
+<main class="container app-shell fade-in-up">
+    <section class="hero-card hero-card-compact glass-panel">
+        <p class="eyebrow">Order item dashboard</p>
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Order item management</h1>
+                <p class="subtitle">Review, edit, and maintain individual order items with clear product and subtotal tracking.</p>
+            </div>
+            <div class="actions">
+                <a class="button-link button-link-glow" th:href="@{/item-of-order/new}">New order item</a>
+                <a class="button-link button-link-ghost" th:href="@{/home}">Home page</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="card-grid mt-20" aria-label="List indicators">
+        <article class="stat-card neo-surface">
+            <p class="stat-label">Total records</p>
+            <p class="stat-value" th:text="${#lists.size(itemsOfOrder)}">0</p>
+        </article>
+        <article class="stat-card neo-surface">
+            <p class="stat-label">Detail level</p>
+            <p class="stat-value">Itemized</p>
+        </article>
+        <article class="stat-card neo-surface">
+            <p class="stat-label">Interface</p>
+            <p class="stat-value">Responsive</p>
+        </article>
+    </section>
+
+    <section class="table-wrap table-wrap-glass mt-20 brutal-edge" aria-label="Order item table">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>Order</th>
+                <th>Product</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+                <th colspan="2">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(itemsOfOrder)}">
+                <td colspan="7" class="empty-state">No order items registered yet. Click "New order item" to get started.</td>
+            </tr>
+            <tr th:each="itemOfOrder : ${itemsOfOrder}">
+                <td th:text="${itemOfOrder.order != null ? itemOfOrder.order.orderId : '-'}">*</td>
+                <td th:text="${itemOfOrder.product != null ? itemOfOrder.product.productDescription : '-'}">*</td>
+                <td th:text="${itemOfOrder.amount}">*</td>
+                <td th:text="${#numbers.formatDecimal(itemOfOrder.price, 1, 2)}">*</td>
+                <td th:text="${#numbers.formatDecimal(itemOfOrder.subtotal, 1, 2)}">*</td>
+                <td><a class="table-action" th:href="@{/item-of-order/edit/{itemId}(itemId=${itemOfOrder.itemId})}">Edit</a></td>
+                <td><a class="table-action table-action-danger" th:href="@{/item-of-order/delete/{itemId}(itemId=${itemOfOrder.itemId})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

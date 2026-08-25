@@ -50,7 +50,7 @@
                     required
             >
 
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <button type="submit">Login</button>
         </form>
 

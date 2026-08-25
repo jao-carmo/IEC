@@ -1,31 +1,257 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
     <meta charset="UTF-8">
-    <title>Order Form</title>
+    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}">
+    <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FatecADS | Order Registration</title>
 </head>
 <body>
-    <h1>Order Form</h1>
+<div class="bg-orb orb-one"></div>
+<div class="bg-orb orb-two"></div>
+<form class="signout-fixed" th:action="@{/logout}" method="post">
+    <input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <button type="submit" class="button-link table-action-danger">Sign out</button>
+</form>
+
+<main class="container app-shell fade-in-up">
     <datalist id="listStudent">
         <option th:each="student : ${students}"
-                th:value="${student.studentId + ' - student.fullName}"></option>
+                th:value="${student.studentId + ' - ' + student.fullName}"></option>
     </datalist>
 
     <datalist id="listProduct">
         <option th:each="product : ${products}"
-                th:value="${product.productId + ' - product.productDescription}"
+                th:value="${product.productId + ' - ' + product.productDescription}"
                 th:attr="data-price=${product.productPrice}">
         </option>
     </datalist>
 
-    <h1>Order Register</h1>
-    <a th:href="@{/home}">Back</a>
+    <section class="hero-card hero-card-compact glass-panel">
+        <div class="page-header">
+            <div>
+                <p class="eyebrow">Sales flow</p>
+                <h1 class="page-title">Order registration</h1>
+            </div>
+            <div class="actions">
+                <a class="button-link button-link-ghost" th:href="@{/home}">Home page</a>
+            </div>
+        </div>
+        <p class="subtitle">Select a student, add products to the order, and confirm the final total in one focused workflow.</p>
+    </section>
 
-    <p>1. Student Identification</p>
-    <label for="student">student</label>
-    <br>
-    <input list="listStudent" id="student" placeholder="Type the student ID or name" required>
-    <br><br>
-    <p>2. Product Selection</p>
+    <section class="form-layout mt-20">
+        <aside class="side-note glass-panel">
+            <p class="eyebrow">Order steps</p>
+            <h2 class="side-note-title">Guided checkout</h2>
+            <p class="side-note-text">Choose the student first, then add products with valid amounts. The total updates before saving.</p>
+            <div class="hero-pill-row mt-16">
+                <span class="hero-pill">Student linked</span>
+                <span class="hero-pill">Product checked</span>
+                <span class="hero-pill">Total preview</span>
+            </div>
+        </aside>
+
+        <section class="form-card brutal-edge">
+            <label for="student">Student</label>
+            <input list="listStudent" id="student" placeholder="Type the student ID or name" required>
+
+            <label for="product">Product</label>
+            <input list="listProduct" id="product" placeholder="Type the product ID or description" required>
+
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" placeholder="Type the amount" min="1" step="1" required>
+
+            <button type="button" onclick="addItem()">Add item</button>
+        </section>
+    </section>
+
+    <section class="table-wrap table-wrap-glass mt-20 brutal-edge" aria-label="Order items table">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="items-table">
+            <tr id="empty-row">
+                <td colspan="5" class="empty-state">No products added to the order.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="hero-card hero-card-compact glass-panel mt-20">
+        <div class="page-header">
+            <div>
+                <p class="eyebrow">Order total</p>
+                <h2 class="side-note-title">$ <span id="orderTotal">0.00</span></h2>
+            </div>
+            <button type="button" onclick="saveOrder()">Confirm and save order</button>
+        </div>
+    </section>
+</main>
+
+<script>
+    let items = [];
+
+    function addItem() {
+        let productInput = document.getElementById("product").value;
+        let amount = Number(document.getElementById("amount").value);
+
+        if (!productInput || amount <= 0) {
+            alert("Please fill in the product and amount correctly!");
+            return;
+        }
+
+        let parts = productInput.split(" - ");
+        let productId = Number(parts[0]);
+        let productName = parts[1];
+
+        let options = document.querySelectorAll("#listProduct option");
+        let price = null;
+
+        options.forEach(opt => {
+            if (opt.value === productInput) {
+                price = opt.getAttribute("data-price");
+            }
+        });
+
+        if (!price) {
+            alert("Invalid product! Please select a product from the list.");
+            return;
+        }
+
+        if (!productId || !productName) {
+            alert("Invalid product! Please select a product from the list.");
+            return;
+        }
+
+        price = Number(price);
+        let subtotal = amount * price;
+
+        items.push({
+            product: { productId: productId },
+            productName: productName,
+            amount: amount,
+            price: price,
+            subtotal: subtotal
+        });
+
+        document.getElementById("product").value = "";
+        document.getElementById("amount").value = "";
+
+        renderTable();
+    }
+
+    function removeItem(index) {
+        items.splice(index, 1);
+        renderTable();
+    }
+
+    function renderTable() {
+        let table = document.getElementById("items-table");
+
+        table.innerHTML = "";
+
+        if (items.length === 0) {
+            table.innerHTML = `
+                <tr class="empty-row" id="empty-row">
+                    <td colspan="5" class="empty-state">No products added to the order.</td>
+                </tr>
+            `;
+
+            document.getElementById("orderTotal").innerText = "0.00";
+            return;
+        }
+
+        let total = 0;
+
+        items.forEach((item, index) => {
+            total += item.subtotal;
+
+            table.innerHTML += `
+                <tr>
+                    <td>${item.productName}</td>
+                    <td>${item.amount}</td>
+                    <td>$ ${item.price.toFixed(2)}</td>
+                    <td>$ ${item.subtotal.toFixed(2)}</td>
+                    <td>
+                        <button type="button" class="table-action table-action-danger" onclick="removeItem(${index})">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        document.getElementById("orderTotal").innerText = total.toFixed(2);
+    }
+
+    function saveOrder() {
+        let studentInput = document.getElementById("student").value;
+
+        if (!studentInput) {
+            alert("Please select a student before saving!");
+            return;
+        }
+
+        if (items.length === 0) {
+            alert("Add at least one product to the order!");
+            return;
+        }
+
+        let selectedStudent = Array.from(document.querySelectorAll("#listStudent option"))
+            .some(option => option.value === studentInput);
+        let studentId = Number(studentInput.split(" - ")[0]);
+
+        if (!selectedStudent || !studentId) {
+            alert("Invalid student! Please select a student from the list.");
+            return;
+        }
+
+        let orderItems = items.map(item => ({
+            product: { productId: item.product.productId },
+            amount: item.amount
+        }));
+        let orderPayload = {
+            student: { studentId: studentId },
+            item: orderItems
+        };
+        let headers = {
+            "Content-Type": "application/json"
+        };
+        let csrfTokenElement = document.querySelector('meta[name="_csrf"]');
+        let csrfHeaderElement = document.querySelector('meta[name="_csrf_header"]');
+
+        if (csrfTokenElement && csrfHeaderElement) {
+            headers[csrfHeaderElement.content] = csrfTokenElement.content;
+        }
+
+        fetch("/order", {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(orderPayload)
+        })
+        .then(response => {
+            if (!response.ok || response.redirected) {
+                throw new Error("Order request failed");
+            }
+            alert("Order saved successfully!");
+            location.reload();
+        })
+        .catch(error => {
+            alert("Error saving the order. Please try again.");
+            console.error(error);
+        });
+    }
+</script>
 </body>
 </html>

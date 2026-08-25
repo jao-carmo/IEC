@@ -1,24 +1,27 @@
 # Fatec ADS
 
-Sistema web academico desenvolvido com Spring Boot para gerenciamento de usuarios, cursos, professores, alunos e disciplinas. O projeto usa paginas Thymeleaf no servidor, autenticacao com Spring Security e persistencia em banco PostgreSQL.
+Academic web system built with Spring Boot for managing users, courses, professors, students, subjects, products, orders, and order items. The project uses server-rendered Thymeleaf pages, Spring Security authentication, and PostgreSQL persistence.
 
-## Visao geral
+## Overview
 
-O Fatec ADS centraliza operacoes basicas de cadastro e consulta em um ambiente administrativo simples. A interface segue uma proposta de design limpa e objetiva, com inspiracao em principios de Material Design, Human Interface, design responsivo, acessibilidade e experiencia centrada no usuario.
+Fatec ADS centralizes basic registration and search operations in a simple administrative environment. The interface follows a clean and direct design approach inspired by Material Design, Human Interface principles, responsive design, accessibility, and user-centered experience.
 
-## Funcionalidades
+## Features
 
-- Login e logout de usuarios.
-- Cadastro publico de usuarios.
-- Recuperacao de senha por token enviado por e-mail.
-- Listagem, criacao, edicao e exclusao de cursos.
-- Listagem, criacao, edicao e exclusao de professores.
-- Listagem, criacao, edicao e exclusao de alunos.
-- Listagem, criacao, edicao e exclusao de disciplinas.
-- Associacao de alunos a cursos.
-- Associacao de disciplinas a cursos e professores.
+- User login and logout.
+- Public user registration.
+- Password recovery by e-mail token.
+- Course listing, creation, editing, and deletion.
+- Professor listing, creation, editing, and deletion.
+- Student listing, creation, editing, and deletion.
+- Subject listing, creation, editing, and deletion.
+- Product listing, creation, editing, and deletion.
+- Order registration with products and totals.
+- Order item listing, creation, editing, and deletion.
+- Student association with courses.
+- Subject association with courses and professors.
 
-## Tecnologias
+## Technologies
 
 - Java 17
 - Spring Boot 3.3.4
@@ -30,16 +33,16 @@ O Fatec ADS centraliza operacoes basicas de cadastro e consulta em um ambiente a
 - Lombok
 - Maven Wrapper
 
-## Requisitos
+## Requirements
 
-Antes de executar o projeto, instale ou configure:
+Before running the project, install or configure:
 
-- JDK 17 ou superior.
-- PostgreSQL em execucao.
-- Banco de dados chamado `fatecads_db`.
-- Usuario do banco com acesso ao PostgreSQL.
+- JDK 17 or later.
+- PostgreSQL running locally.
+- A database named `fatecads_db`.
+- A database user with PostgreSQL access.
 
-As configuracoes padrao estao em `src/main/resources/application.properties`.
+The default settings are in `src/main/resources/application.properties`.
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/fatecads_db
@@ -48,144 +51,152 @@ spring.datasource.password=123456
 server.port=8080
 ```
 
-Se necessario, altere usuario, senha, porta ou nome do banco conforme o ambiente local.
+If necessary, change the username, password, port, or database name according to the local environment.
 
-## Configuracao do banco
+## Database Setup
 
-Crie o banco no PostgreSQL:
+Create the database in PostgreSQL:
 
 ```sql
 CREATE DATABASE fatecads_db;
 ```
 
-O projeto esta configurado com:
+The project is configured with:
 
 ```properties
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-Com isso, as tabelas sao criadas ou atualizadas automaticamente pelo Hibernate ao iniciar a aplicacao.
+With this setting, Hibernate creates or updates the tables automatically when the application starts.
 
-## Configuracao de e-mail
+## E-mail Setup
 
-A recuperacao de senha usa SMTP do Gmail. No arquivo `application.properties`, configure um e-mail valido e uma senha de aplicativo:
+Password recovery uses Gmail SMTP. In `application.properties`, configure a valid e-mail account and an application password:
 
 ```properties
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
-spring.mail.username=seu_email@gmail.com
-spring.mail.password=sua_senha_de_app
+spring.mail.username=your_email@gmail.com
+spring.mail.password=your_app_password
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
-spring.mail.from=seu_email@gmail.com
+spring.mail.from=your_email@gmail.com
 ```
 
-Para Gmail, use uma senha de aplicativo gerada na conta Google. Nao utilize a senha principal da conta.
+For Gmail, use an app password generated in the Google account. Do not use the main account password.
 
-## Como executar
+## How to Run
 
-Na raiz do projeto, execute:
+From the project root, run:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-No Windows, tambem e possivel usar:
+On Windows, you can also use:
 
 ```bash
 mvnw.cmd spring-boot:run
 ```
 
-Depois acesse:
+Then open:
 
 ```text
 http://localhost:8080/fatecads
 ```
 
-## Testes
+## Tests
 
-Para executar os testes automatizados:
+To run automated tests:
 
 ```bash
 ./mvnw test
 ```
 
-No Windows:
+On Windows:
 
 ```bash
 mvnw.cmd test
 ```
 
-## Principais rotas
+## Main Routes
 
-| Rota | Descricao |
+| Route | Description |
 | --- | --- |
-| `/fatecads` | Pagina inicial publica |
-| `/login` | Tela de login |
-| `/home` | Pagina inicial apos autenticacao |
-| `/users/create` | Cadastro de usuario |
-| `/users/list` | Lista de usuarios |
-| `/forgot-password` | Solicitacao de recuperacao de senha |
-| `/reset-password` | Redefinicao de senha por token |
-| `/course/list` | Lista de cursos |
-| `/course/new` | Cadastro de curso |
-| `/professor/list` | Lista de professores |
-| `/professor/new` | Cadastro de professor |
-| `/student/list` | Lista de alunos |
-| `/student/new` | Cadastro de aluno |
-| `/subject/list` | Lista de disciplinas |
-| `/subject/new` | Cadastro de disciplina |
+| `/fatecads` | Public landing page |
+| `/login` | Login page |
+| `/home` | Home page after authentication |
+| `/users/create` | User registration |
+| `/users/list` | User list |
+| `/forgot-password` | Password recovery request |
+| `/reset-password` | Password reset by token |
+| `/course/list` | Course list |
+| `/course/new` | Course registration |
+| `/professor/list` | Professor list |
+| `/professor/new` | Professor registration |
+| `/student/list` | Student list |
+| `/student/new` | Student registration |
+| `/subject/list` | Subject list |
+| `/subject/new` | Subject registration |
+| `/product/list` | Product list |
+| `/product/new` | Product registration |
+| `/order/create` | Order registration |
+| `/item-of-order/list` | Order item list |
+| `/item-of-order/new` | Order item registration |
 
-## Estrutura do projeto
+## Project Structure
 
 ```text
 src/
   main/
     java/br/com/fatecads/fatecads/
-      config/       Configuracoes de seguranca e autenticacao
-      controller/   Controladores MVC
-      entity/       Entidades JPA
-      repository/   Interfaces de acesso ao banco
-      service/      Regras de negocio
+      config/       Security and authentication configuration
+      controller/   MVC controllers
+      entity/       JPA entities
+      repository/   Database access interfaces
+      service/      Business rules
     resources/
-      static/css/   Estilos da aplicacao
-      templates/    Paginas Thymeleaf
+      static/css/   Application styles
+      templates/    Thymeleaf pages
       application.properties
   test/
-    java/           Testes automatizados
+    java/           Automated tests
 ```
 
-## Modelo de dados
+## Data Model
 
-Entidades principais:
+Main entities:
 
-- `User`: usuario do sistema, credenciais, perfil e token de recuperacao de senha.
-- `Course`: curso, periodo e carga horaria.
-- `Professor`: professor, telefone, formacao e RM.
-- `Student`: aluno, dados pessoais, matricula e curso vinculado.
-- `Subject`: disciplina, codigo, carga horaria, curso e professor vinculados.
+- `User`: system user, credentials, role, and password recovery token.
+- `Course`: course, period, and workload hours.
+- `Professor`: professor, phone, graduation, and RM.
+- `Student`: student, personal data, registration number, and linked course.
+- `Subject`: subject, code, workload hours, linked course, and linked professor.
+- `Product`: product description, price, unit, and brand.
+- `Order`: order date, student, items, and total.
+- `ItemOfOrder`: order item, amount, price, subtotal, product, and order.
 
-## Seguranca
+## Security
 
-A aplicacao usa Spring Security com:
+The application uses Spring Security with:
 
-- Senhas criptografadas com BCrypt.
-- Login customizado em `/login`.
-- Redirecionamento para `/home` apos login.
-- Logout com retorno para `/login?logout`.
-- Acesso publico as rotas de login, cadastro de usuario, recuperacao de senha, pagina inicial e arquivos estaticos.
-- Demais rotas protegidas por autenticacao.
+- Passwords encrypted with BCrypt.
+- Custom login at `/login`.
+- Redirect to `/home` after login.
+- Logout returning to `/login?logout`.
+- Public access to login, user registration, password recovery, landing page, and static file routes.
+- All other routes protected by authentication.
 
-## Observacoes de design
+## Design Notes
 
-O projeto pode evoluir mantendo alguns principios ja validados para este tipo de sistema:
+The project can evolve while keeping principles already validated for this type of system:
 
-- Layout minimalista e responsivo.
-- Navegacao clara para rotinas administrativas.
-- Componentes consistentes, seguindo uma ideia de design system.
-- Acessibilidade em formularios, botoes, contraste e mensagens de erro.
-- Experiencia objetiva para uso academico e administrativo.
+- Minimalist and responsive layout.
+- Clear navigation for administrative routines.
+- Consistent components following a design system idea.
+- Accessibility in forms, buttons, contrast, and error messages.
+- Objective experience for academic and administrative use.
 
-## Autor
+## Author
 
-Projeto academico desenvolvido no contexto da Fatec ADS.
+Academic project developed in the Fatec ADS context.

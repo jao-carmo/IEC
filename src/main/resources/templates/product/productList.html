@@ -1,31 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
     <meta charset="UTF-8">
-    <title>Product List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FatecADS | Products</title>
 </head>
 <body>
-    <h1>Product List</h1>
-    <h2>
-        <a th:href="@{/product/create}">To add a new Product</a>
-    </h2>
-    <table>
-        <tr>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Unit</th>
-            <th>Brand</th>
-            <th colspan="2">Action</th>
-        </tr>
-        <tr th:each="product : ${products}">
-            <td th:text="${product.productDescription}"></td>
-            <td th:text="${product.productPrice}"></td>
-            <td th:text="${product.productUnit}"></td>
-            <td th:text="${product.productBrand}"></td>
-            <td>
-            <td><a class="table-action" th:href="@{/product/edit/{productId}(productId=${product.productId})}">Edit</a></td>
-            <td><a class="table-action table-action-danger" th:href="@{/product/delete/{productId}(productId=${product.productId})}">Delete</a></td>
-        </tr>
-    </table>
+<div class="bg-orb orb-one"></div>
+<div class="bg-orb orb-two"></div>
+<form class="signout-fixed" th:action="@{/logout}" method="post">
+    <input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <button type="submit" class="button-link table-action-danger">Sign out</button>
+</form>
+
+<main class="container app-shell fade-in-up">
+    <section class="hero-card hero-card-compact glass-panel">
+        <p class="eyebrow">Inventory dashboard</p>
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Product management</h1>
+                <p class="subtitle">Review, edit, and maintain product records with clean inventory visibility.</p>
+            </div>
+            <div class="actions">
+                <a class="button-link button-link-glow" th:href="@{/product/new}">New product</a>
+                <a class="button-link button-link-ghost" th:href="@{/home}">Home page</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="card-grid mt-20" aria-label="List indicators">
+        <article class="stat-card neo-surface">
+            <p class="stat-label">Total records</p>
+            <p class="stat-value" th:text="${#lists.size(products)}">0</p>
+        </article>
+        <article class="stat-card neo-surface">
+            <p class="stat-label">Catalog</p>
+            <p class="stat-value">Ready</p>
+        </article>
+        <article class="stat-card neo-surface">
+            <p class="stat-label">Interface</p>
+            <p class="stat-value">Responsive</p>
+        </article>
+    </section>
+
+    <section class="table-wrap table-wrap-glass mt-20 brutal-edge" aria-label="Product table">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Unit</th>
+                <th>Brand</th>
+                <th colspan="2">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(products)}">
+                <td colspan="6" class="empty-state">No products registered yet. Click "New product" to get started.</td>
+            </tr>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.productDescription}">*</td>
+                <td th:text="${#numbers.formatDecimal(product.productPrice, 1, 2)}">*</td>
+                <td th:text="${product.productUnit}">*</td>
+                <td th:text="${product.productBrand}">*</td>
+                <td><a class="table-action" th:href="@{/product/edit/{productId}(productId=${product.productId})}">Edit</a></td>
+                <td><a class="table-action table-action-danger" th:href="@{/product/delete/{productId}(productId=${product.productId})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
 </body>
 </html>

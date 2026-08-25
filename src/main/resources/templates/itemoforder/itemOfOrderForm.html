@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FatecADS | Order Item Registration</title>
+</head>
+<body>
+<div class="bg-orb orb-one"></div>
+<div class="bg-orb orb-two"></div>
+<form class="signout-fixed" th:action="@{/logout}" method="post">
+    <input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <button type="submit" class="button-link table-action-danger">Sign out</button>
+</form>
+
+<main class="container app-shell fade-in-up">
+    <section class="hero-card hero-card-compact glass-panel">
+        <div class="page-header">
+            <div>
+                <p class="eyebrow">Item form</p>
+                <h1 class="page-title">Order item registration</h1>
+            </div>
+            <div class="actions">
+                <a class="button-link button-link-ghost" th:href="@{/item-of-order/list}">Back to list</a>
+            </div>
+        </div>
+        <p class="subtitle">Connect an item to an order and product, then define amount and price for subtotal tracking.</p>
+    </section>
+
+    <section class="form-layout mt-20">
+        <aside class="side-note glass-panel">
+            <p class="eyebrow">Best practices</p>
+            <h2 class="side-note-title">Item standards</h2>
+            <p class="side-note-text">Use this screen for direct item maintenance. The full order screen remains the preferred flow for complete order creation.</p>
+            <div class="hero-pill-row mt-16">
+                <span class="hero-pill">Order linked</span>
+                <span class="hero-pill">Product selected</span>
+                <span class="hero-pill">Subtotal ready</span>
+            </div>
+        </aside>
+
+        <form class="form-card brutal-edge" th:action="@{/item-of-order/save}" th:object="${itemOfOrder}" method="post">
+            <input type="hidden" th:field="*{itemId}">
+
+            <label for="order">Order</label>
+            <select id="order" th:field="*{order}">
+                <option value="">No order selected</option>
+                <option th:each="order : ${orders}"
+                        th:value="${order.orderId}"
+                        th:text="${'Order #' + order.orderId}">
+                    Order
+                </option>
+            </select>
+
+            <label for="product">Product</label>
+            <select id="product" th:field="*{product}" required>
+                <option value="" disabled selected>Choose a product</option>
+                <option th:each="product : ${products}"
+                        th:value="${product.productId}"
+                        th:text="${product.productDescription}">
+                    Product
+                </option>
+            </select>
+
+            <label for="amount">Amount</label>
+            <input id="amount" type="number" min="1" step="1" th:field="*{amount}" required placeholder="Example: 2">
+
+            <label for="price">Price</label>
+            <input id="price" type="number" min="0" step="0.01" th:field="*{price}" required placeholder="Example: 149.90">
+
+            <button type="submit">Save order item</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

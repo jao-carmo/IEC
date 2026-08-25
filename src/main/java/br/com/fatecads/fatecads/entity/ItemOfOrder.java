@@ -38,6 +38,6 @@ public class ItemOfOrder {
 
     //Method to update the subtotal
     public void subTotalUpdate(){
-        this.subtotal = this.subtotal * amount;
+        this.subtotal = subTotalCalculated();
     }
 }

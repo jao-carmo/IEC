@@ -32,4 +32,9 @@ public class OrderService {
         order.totalUpdate();
         return orderRepository.save(order);
     }
+
+    //Method to search all orders
+    public java.util.List<Order> findAll(){
+        return orderRepository.findAll();
+    }
 }

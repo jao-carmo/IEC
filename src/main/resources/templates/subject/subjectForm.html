@@ -11,7 +11,7 @@
 <div class="bg-orb orb-one"></div>
 <div class="bg-orb orb-two"></div>
 <form class="signout-fixed" th:action="@{/logout}" method="post">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     <button type="submit" class="button-link table-action-danger">Sign out</button>
 </form>
 

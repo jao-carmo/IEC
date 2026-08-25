@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/products")
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
@@ -21,21 +21,21 @@ public class ProductController {
     public String list(Model model){
         List<Product> products = productService.findAll();
         model.addAttribute("products", products);
-        return "product/list";
+        return "product/productList";
     }
 
     //Method to open the product creation form
-    @GetMapping("/create")
+    @GetMapping({"/new", "/create"})
     public String createForm(Model model){
         model.addAttribute("product", new Product());
-        return "product/createForm";
+        return "product/productForm";
     }
 
     //Method to save a product
     @PostMapping("/save")
     public String save(@ModelAttribute Product product){
         productService.save(product);
-        return "redirect:/products/list";
+        return "redirect:/product/list";
     }
 
     //Method to open the edit form
@@ -43,7 +43,7 @@ public class ProductController {
     public String editForm(@PathVariable Integer id, Model model){
         Product product = productService.findById(id);
         model.addAttribute("product", product);
-        return "product/editForm";
+        return "product/productForm";
     }
 
     //Method to delete a product to ID

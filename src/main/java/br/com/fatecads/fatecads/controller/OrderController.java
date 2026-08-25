@@ -4,11 +4,11 @@ package br.com.fatecads.fatecads.controller;
 import br.com.fatecads.fatecads.entity.Order;
 import br.com.fatecads.fatecads.entity.Product;
 import br.com.fatecads.fatecads.entity.Student;
-import br.com.fatecads.fatecads.repository.OrderRepository;
 import br.com.fatecads.fatecads.service.OrderService;
 import br.com.fatecads.fatecads.service.ProductService;
 import br.com.fatecads.fatecads.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +30,9 @@ public class OrderController {
 
     @PostMapping
     @ResponseBody
-    public Order save(@RequestBody Order order) {
-        return orderService.orderCreate(order);
+    public ResponseEntity<Void> save(@RequestBody Order order) {
+        orderService.orderCreate(order);
+        return ResponseEntity.ok().build();
     }
 
     //Method to open the order creation view
