@@ -23,8 +23,10 @@ public class SecurityConfig {
                                 "/forgot-password",
                                 "/reset-password",
                                 "/css/**",
-                                "/images/**",
-                                "/users/**")
+                                "/uploads/**",
+                        "/images/**",
+                                "/users/create",
+                                "/users/save")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form

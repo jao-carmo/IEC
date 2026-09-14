@@ -49,6 +49,7 @@
         <table class="data-table">
             <thead>
             <tr>
+                <th>Image</th>
                 <th>Description</th>
                 <th>Price</th>
                 <th>Unit</th>
@@ -58,9 +59,13 @@
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(products)}">
-                <td colspan="6" class="empty-state">No products registered yet. Click "New product" to get started.</td>
+                <td colspan="7" class="empty-state">No products registered yet. Click "New product" to get started.</td>
             </tr>
             <tr th:each="product : ${products}">
+                <td>
+                    <img th:if="${product.imagePath != null}" th:src="@{${product.imagePath}}" th:alt="${product.productDescription}" class="product-image">
+                    <span th:unless="${product.imagePath != null}" class="text-muted">No image</span>
+                </td>
                 <td th:text="${product.productDescription}">*</td>
                 <td th:text="${#numbers.formatDecimal(product.productPrice, 1, 2)}">*</td>
                 <td th:text="${product.productUnit}">*</td>

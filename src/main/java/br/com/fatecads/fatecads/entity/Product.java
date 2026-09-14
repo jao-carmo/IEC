@@ -29,6 +29,9 @@ public class Product {
     @Column(nullable = false, length = 30)
     private String productBrand;
 
+    @Column(length = 255)
+    private String imagePath;
+
     @OneToMany(mappedBy = "product")
     private List<ItemOfOrder> item;
 }

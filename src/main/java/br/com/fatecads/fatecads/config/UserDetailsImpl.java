@@ -2,6 +2,7 @@ package br.com.fatecads.fatecads.config;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import br.com.fatecads.fatecads.entity.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +19,17 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(user.getRole()));
+        String role = user.getRole();
+        if (role == null || role.isBlank()) {
+            role = "ROLE_USER";
+        }
+
+        role = role.trim().toUpperCase(Locale.ROOT);
+        if (!role.startsWith("ROLE_")) {
+            role = "ROLE_" + role;
+        }
+
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
     @Override

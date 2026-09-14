@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FatecADS | Orders</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<form class="signout-fixed" th:action="@{/logout}" method="post">
+    <input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <button type="submit" class="button-link table-action-danger" aria-label="Sign out" title="Sign out">Sign out</button>
+</form>
+<main class="container app-shell fade-in-up">
+    <section class="hero-card hero-card-compact glass-panel">
+        <p class="eyebrow">Operations</p>
+        <div class="page-header">
+            <div><h1 class="page-title">Orders</h1><p class="subtitle">Review saved orders, linked students, item counts, and calculated totals.</p></div>
+            <div class="actions"><a class="button-link" th:href="@{/order/create}">New order</a><a class="button-link button-link-ghost" th:href="@{/home}">Workspace</a></div>
+        </div>
+    </section>
+    <section class="card-grid mt-20" aria-label="Order indicators">
+        <article class="stat-card"><span class="stat-label">Total orders</span><strong class="stat-value" th:text="${#lists.size(orders)}">0</strong></article>
+        <article class="stat-card"><span class="stat-label">Record type</span><strong class="stat-value">Transactional</strong></article>
+        <article class="stat-card"><span class="stat-label">Status</span><strong class="stat-value">Saved records</strong></article>
+    </section>
+    <section class="table-wrap table-wrap-glass mt-20" aria-label="Orders table">
+        <table class="data-table">
+            <thead><tr><th>Order</th><th>Date</th><th>Student</th><th>Items</th><th>Total</th><th>Action</th></tr></thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(orders)}"><td colspan="6" class="empty-state">No orders registered yet. Click “New order” to create the first one.</td></tr>
+            <tr th:each="order : ${orders}">
+                <td th:text="${'Order #' + order.orderId}">Order #1</td>
+                <td th:text="${order.orderDate != null ? order.orderDate : '-'}">-</td>
+                <td th:text="${order.student != null ? order.student.fullName : '-'}">-</td>
+                <td th:text="${order.item != null ? #lists.size(order.item) : 0}">0</td>
+                <td th:text="${order.orderTotal != null ? #numbers.formatDecimal(order.orderTotal, 1, 2) : '0.00'}">0.00</td>
+                <td><a class="table-action" th:href="@{/item-of-order/list}">View items</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>

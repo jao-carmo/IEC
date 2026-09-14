@@ -26,7 +26,7 @@
     <datalist id="listProduct">
         <option th:each="product : ${products}"
                 th:value="${product.productId + ' - ' + product.productDescription}"
-                th:attr="data-price=${product.productPrice}">
+                th:attr="data-price=${product.productPrice},data-image=${product.imagePath != null ? product.imagePath : ''}">
         </option>
     </datalist>
 
@@ -117,14 +117,16 @@
 
         let options = document.querySelectorAll("#listProduct option");
         let price = null;
+        let selectedOption = null;
 
         options.forEach(opt => {
             if (opt.value === productInput) {
                 price = opt.getAttribute("data-price");
+                selectedOption = opt;
             }
         });
 
-        if (!price) {
+        if (price === null || price === "") {
             alert("Invalid product! Please select a product from the list.");
             return;
         }
@@ -140,6 +142,7 @@
         items.push({
             product: { productId: productId },
             productName: productName,
+            imagePath: selectedOption ? selectedOption.getAttribute("data-image") : null,
             amount: amount,
             price: price,
             subtotal: subtotal
@@ -179,8 +182,11 @@
 
             table.innerHTML += `
                 <tr>
-                    <td>${item.productName}</td>
-                    <td>${item.amount}</td>
+                    <td class="order-product-cell">
+                        ${item.imagePath ? `<img src="${item.imagePath}" alt="${item.productName}" class="product-image">` : `<span class="text-muted">No image</span>`}
+                        <span>${item.productName}</span>
+                    </td>
+                    <td><input class="amount-input" type="number" min="1" step="1" value="${item.amount}" onchange="updateAmount(${index}, this.value)" aria-label="Amount for ${item.productName}"></td>
                     <td>$ ${item.price.toFixed(2)}</td>
                     <td>$ ${item.subtotal.toFixed(2)}</td>
                     <td>
@@ -193,6 +199,19 @@
         });
 
         document.getElementById("orderTotal").innerText = total.toFixed(2);
+    }
+
+    function updateAmount(index, value) {
+        let amount = Number(value);
+        if (!Number.isInteger(amount) || amount <= 0) {
+            alert("Amount must be a whole number greater than zero.");
+            renderTable();
+            return;
+        }
+
+        items[index].amount = amount;
+        items[index].subtotal = amount * items[index].price;
+        renderTable();
     }
 
     function saveOrder() {
@@ -245,7 +264,7 @@
                 throw new Error("Order request failed");
             }
             alert("Order saved successfully!");
-            location.reload();
+            window.location.href = "/order/list";
         })
         .catch(error => {
             alert("Error saving the order. Please try again.");

@@ -21,7 +21,26 @@ public class UserService {
 
     // Method to save a user
     public User save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getUserId() != null) {
+            User existingUser = userRepository.findById(user.getUserId()).orElse(null);
+            if (existingUser != null && (user.getPassword() == null || user.getPassword().isBlank())) {
+                user.setPassword(existingUser.getPassword());
+            }
+        }
+
+        if (user.getPassword() == null || user.getPassword().isBlank()) {
+            throw new IllegalArgumentException("Password is required for a new user");
+        }
+
+        if (!user.getPassword().startsWith("$2a$")
+                && !user.getPassword().startsWith("$2b$")
+                && !user.getPassword().startsWith("$2y$")) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        if (user.getRole() == null || user.getRole().isBlank()) {
+            user.setRole("ROLE_USER");
+        }
         return userRepository.save(user);
     }
 

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -33,8 +35,9 @@ public class ProductController {
 
     //Method to save a product
     @PostMapping("/save")
-    public String save(@ModelAttribute Product product){
-        productService.save(product);
+    public String save(@ModelAttribute Product product,
+                       @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+        productService.save(product, image);
         return "redirect:/product/list";
     }
 

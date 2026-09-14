@@ -47,4 +47,10 @@ public class OrderController {
         model.addAttribute("products", products);
         return "order/orderForm";
     }
+
+    @GetMapping("/list")
+    public String list(Model model) {
+        model.addAttribute("orders", orderService.findAll());
+        return "order/orderList";
+    }
 }

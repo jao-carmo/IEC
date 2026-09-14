@@ -41,7 +41,7 @@
             </div>
         </aside>
 
-        <form class="form-card brutal-edge" th:action="@{/product/save}" th:object="${product}" method="post">
+        <form class="form-card brutal-edge" th:action="@{/product/save}" th:object="${product}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{productId}">
 
             <label for="productDescription">Product description</label>
@@ -55,6 +55,13 @@
 
             <label for="productBrand">Brand</label>
             <input type="text" id="productBrand" th:field="*{productBrand}" maxlength="30" required placeholder="Example: Fatec">
+
+            <label for="image">Product image</label>
+            <div>
+                <img th:if="${product.imagePath != null}" th:src="@{${product.imagePath}}" alt="Current product image" class="product-image product-image-preview">
+                <input type="file" id="image" name="image" accept="image/*">
+                <small class="text-muted">Choose an image from your computer or phone.</small>
+            </div>
 
             <button type="submit">Save product</button>
         </form>
