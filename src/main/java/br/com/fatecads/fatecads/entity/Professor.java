@@ -35,4 +35,8 @@ public class Professor {
 
     @Column(nullable = false)
     private String RM;
+
+    @jakarta.persistence.OneToOne
+    @jakarta.persistence.JoinColumn(name = "account_id", unique = true)
+    private User account;
 }

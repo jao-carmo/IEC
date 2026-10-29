@@ -26,16 +26,16 @@
     </section>
     <section class="table-wrap table-wrap-glass mt-20" aria-label="Orders table">
         <table class="data-table">
-            <thead><tr><th>Order</th><th>Date</th><th>Student</th><th>Items</th><th>Total</th><th>Action</th></tr></thead>
+            <thead><tr><th>Order</th><th>Date</th><th>Customer / Student</th><th>Items</th><th>Total</th><th>Action</th></tr></thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(orders)}"><td colspan="6" class="empty-state">No orders registered yet. Click “New order” to create the first one.</td></tr>
             <tr th:each="order : ${orders}">
                 <td th:text="${'Order #' + order.orderId}">Order #1</td>
                 <td th:text="${order.orderDate != null ? order.orderDate : '-'}">-</td>
-                <td th:text="${order.student != null ? order.student.fullName : '-'}">-</td>
+                <td th:text="${order.user != null ? order.user.fullName : (order.student != null ? order.student.fullName : '-')}">-</td>
                 <td th:text="${order.item != null ? #lists.size(order.item) : 0}">0</td>
-                <td th:text="${order.orderTotal != null ? #numbers.formatDecimal(order.orderTotal, 1, 2) : '0.00'}">0.00</td>
-                <td><a class="table-action" th:href="@{/item-of-order/list}">View items</a></td>
+                <td th:text="${order.orderTotal != null ? #numbers.formatDecimal(order.orderTotal, 1, 'COMMA', 2, 'POINT') : '0.00'}">0.00</td>
+                <td><a class="table-action" th:href="@{/order/{id}(id=${order.orderId})}">View items</a></td>
             </tr>
             </tbody>
         </table>

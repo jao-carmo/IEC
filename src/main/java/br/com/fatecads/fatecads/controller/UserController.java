@@ -22,9 +22,23 @@ public class UserController {
 
     // Method to save a user
     @PostMapping("/save")
-    public String save(@ModelAttribute User user) {
-        userService.save(user);
-        return "redirect:/login?registered";
+    public String save(@ModelAttribute User user, org.springframework.security.core.Authentication authentication, Model model) {
+        boolean admin = authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        if (!admin) {
+            user.setUserId(null);
+            user.setRole("ROLE_USER");
+        }
+        user.setResetToken(null);
+        user.setResetTokenExpiry(null);
+        try {
+            userService.save(user);
+            return admin ? "redirect:/users/list" : "redirect:/login?registered";
+        } catch (IllegalArgumentException ex) {
+            user.setPassword(null);
+            model.addAttribute("errorMessage", ex.getMessage());
+            return "user/userForm";
+        }
     }
 
     // Method to list all users
@@ -42,7 +56,7 @@ public class UserController {
     }
 
     // Method to delete a user by ID
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
         userService.deleteById(id);
         return "redirect:/users/list";
@@ -51,7 +65,10 @@ public class UserController {
     // Method to edit a user by ID
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Integer id, Model model) {
-        User user = userService.findById(id);
+        User existing = userService.findById(id);
+        if (existing == null) throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND);
+        User user = new User();
+        org.springframework.beans.BeanUtils.copyProperties(existing, user, "password", "resetToken", "resetTokenExpiry");
         model.addAttribute("user", user);
         return "user/userForm";
     }

@@ -68,7 +68,7 @@
                 <td th:text="${subject.course != null ? subject.course.courseName : '-'}">*</td>
                 <td th:text="${subject.professor != null ? subject.professor.fullName : '-'}">*</td>
                 <td><a class="table-action" th:href="@{/subject/edit/{subjectId}(subjectId=${subject.subjectId})}">Edit</a></td>
-                <td><a class="table-action table-action-danger" th:href="@{/subject/delete/{subjectId}(subjectId=${subject.subjectId})}">Delete</a></td>
+                <td><form th:action="@{/subject/delete/{subjectId}(subjectId=${subject.subjectId})}" method="post"><button type="submit" class="table-action table-action-danger">Delete</button></form></td>
             </tr>
             </tbody>
         </table>

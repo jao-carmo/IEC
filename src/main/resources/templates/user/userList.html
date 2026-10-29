@@ -66,7 +66,7 @@
                 <td th:text="${user.login}">*</td>
                 <td th:text="${user.role}">*</td>
                 <td><a class="table-action" th:href="@{/users/edit/{userId}(userId=${user.userId})}">Edit</a></td>
-                <td><a class="table-action table-action-danger" th:href="@{/users/delete/{userId}(userId=${user.userId})}">Delete</a></td>
+                <td><form th:action="@{/users/delete/{userId}(userId=${user.userId})}" method="post"><button type="submit" class="table-action table-action-danger">Delete</button></form></td>
             </tr>
             </tbody>
         </table>

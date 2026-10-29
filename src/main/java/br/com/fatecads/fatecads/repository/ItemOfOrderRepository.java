@@ -4,5 +4,6 @@ import br.com.fatecads.fatecads.entity.ItemOfOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemOfOrderRepository extends JpaRepository<ItemOfOrder, Integer> {
+    java.util.List<ItemOfOrder> findByOrderOrderId(Integer orderId);
 
 }

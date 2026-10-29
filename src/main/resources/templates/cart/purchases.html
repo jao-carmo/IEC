@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>FatecADS | My orders</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
+<body><main class="container app-shell fade-in-up">
+<section class="hero-card"><div class="page-header"><div><p class="eyebrow">Purchase history</p><h1 class="page-title">My orders.</h1><p class="subtitle">View your confirmed orders and item details.</p></div><nav class="actions" aria-label="Shopping navigation"><a class="button-link" th:href="@{/product/list}">Browse products</a><a class="button-link button-link-ghost" th:href="@{/cart}">Shopping cart</a><a class="nav-chip" th:href="@{/home}">Workspace</a></nav></div></section>
+<p th:if="${successMessage}" th:text="${successMessage}" class="badge badge-success" role="status"></p>
+<section class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Order</th><th scope="col">Date</th><th scope="col">Total</th><th scope="col">Details</th></tr></thead><tbody>
+<tr th:if="${#lists.isEmpty(orders)}"><td colspan="4" class="empty-state">No orders yet. Browse the catalog to get started.</td></tr>
+<tr th:each="order : ${orders}"><td th:text="${'#' + order.orderId}"></td><td th:text="${order.orderDate}"></td><td th:text="${'$ ' + #numbers.formatDecimal(order.orderTotal, 1, 'COMMA', 2, 'POINT')}"></td><td><a class="table-action" th:href="@{/purchases/{id}(id=${order.orderId})}">View order</a></td></tr>
+</tbody></table></section></main></body></html>

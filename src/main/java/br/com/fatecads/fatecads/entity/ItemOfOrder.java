@@ -33,7 +33,8 @@ public class ItemOfOrder {
 
     //Method to calculate the subtotal
     public Double subTotalCalculated() {
-        return amount * price;
+        return java.math.BigDecimal.valueOf(price).multiply(java.math.BigDecimal.valueOf(amount))
+                .setScale(2, java.math.RoundingMode.HALF_UP).doubleValue();
     }
 
     //Method to update the subtotal

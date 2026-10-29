@@ -17,6 +17,9 @@ public class CourseService {
         if (course == null) {
             return;
         }
+        RecordValidation.text(course.getCourseName(), 100, "Course name");
+        RecordValidation.text(course.getPeriod(), 40, "Period");
+        RecordValidation.workload(course.getWorkloadHours());
         courseRepository.save(course);
     }
 

@@ -17,11 +17,31 @@ public class ProfessorController {
     @Autowired
     private ProfessorService professorService;
 
+    @Autowired
+    private br.com.fatecads.fatecads.service.AcademicRegistrationService registration;
+
+    @InitBinder("professor")
+    public void fields(org.springframework.web.bind.WebDataBinder binder) {
+        binder.setAllowedFields("professorId", "fullName", "phone", "graduation", "RM");
+    }
+
     // Method to save a professor.
     @PostMapping("/save")
-    public String save(@ModelAttribute Professor professor) {
-        professorService.save(professor);
-        return "redirect:/professor/list";
+    public String save(@ModelAttribute Professor professor,
+            @RequestParam(defaultValue = "false") boolean createAccount,
+            @RequestParam(defaultValue = "") String accountEmail,
+            @RequestParam(defaultValue = "") String accountLogin,
+            @RequestParam(defaultValue = "") String accountPassword, Model model) {
+        try {
+            registration.saveProfessor(professor, createAccount, accountEmail, accountLogin, accountPassword);
+            return "redirect:/professor/list";
+        } catch (IllegalArgumentException ex) {
+            professor.setAccount(professor.getProfessorId() == null ? null : java.util.Optional.ofNullable(professorService.findById(professor.getProfessorId())).map(Professor::getAccount).orElse(null));
+            model.addAttribute("errorMessage", ex.getMessage());
+            model.addAttribute("accountEmail", accountEmail);
+            model.addAttribute("accountLogin", accountLogin);
+            return "professor/professorForm";
+        }
     }
 
     // Method to list all professor records.
@@ -39,7 +59,7 @@ public class ProfessorController {
     }
 
     // Method to delete a professor record by ID.
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
         professorService.deleteById(id);
         return "redirect:/professor/list";
@@ -49,6 +69,7 @@ public class ProfessorController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         Professor professor = professorService.findById(id);
+        if (professor == null) throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND);
         model.addAttribute("professor", professor);
         return "professor/professorForm";
     }

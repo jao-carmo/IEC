@@ -36,7 +36,7 @@ public class CourseController {
         return "course/courseForm";
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
         courseService.deleteById(id);
         return "redirect:/course/list";

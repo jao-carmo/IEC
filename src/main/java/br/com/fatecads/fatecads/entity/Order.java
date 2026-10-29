@@ -26,6 +26,10 @@ public class Order {
     private Double orderTotal;
 
     @ManyToOne
+    @JoinColumn(name = "user_id_fk")
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "studentId_fk")
     private Student student;
 
@@ -34,14 +38,14 @@ public class Order {
 
     //Method to calculate the total
     public Double totalCalculate(){
-        Double total = 0.0;
+        java.math.BigDecimal total = java.math.BigDecimal.ZERO;
 
         if(item != null){
             for(ItemOfOrder item : item){
-                total += item.getSubtotal();
+                total = total.add(java.math.BigDecimal.valueOf(item.getSubtotal()));
             }
         }
-        return total;
+        return total.setScale(2, java.math.RoundingMode.HALF_UP).doubleValue();
     }
 
     //Method to update the total

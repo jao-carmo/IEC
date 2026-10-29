@@ -46,7 +46,7 @@ public class ItemOfOrderController {
         return "itemoforder/itemOfOrderForm";
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
         itemOfOrderService.deleteById(id);
         return "redirect:/item-of-order/list";

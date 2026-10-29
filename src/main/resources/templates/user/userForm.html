@@ -31,7 +31,7 @@
         <aside class="side-note glass-panel">
             <p class="eyebrow">Best practices</p>
             <h2 class="side-note-title">Credential standards</h2>
-            <p class="side-note-text">Confirm email and login accuracy. Use strong passwords and assign the correct role.</p>
+            <p class="side-note-text">Use a unique login and a password with at least 12 characters. When editing, leave the password blank to keep it. Public accounts always receive the User role.</p>
             <div class="hero-pill-row mt-16">
                 <span class="hero-pill">Verified email</span>
                 <span class="hero-pill">Unique login</span>
@@ -53,10 +53,10 @@
             <input id="login" type="text" th:field="*{login}" maxlength="40" required autocomplete="username" placeholder="Example: ana.lima">
 
             <label for="password">Password</label>
-            <input id="password" type="password" th:field="*{password}" maxlength="40" required autocomplete="new-password" placeholder="Create a strong password">
+            <input id="password" type="password" name="password" maxlength="72" minlength="12" th:required="${user.userId == null}" autocomplete="new-password" placeholder="Create a strong password">
 
-            <label for="role">Role</label>
-            <input id="role" type="text" th:field="*{role}" maxlength="30" required placeholder="Example: ROLE_USER">
+            <label th:if="${isAdmin}" for="role">Role</label>
+            <select th:if="${isAdmin}" id="role" th:field="*{role}"><option value="ROLE_USER">User</option><option value="ROLE_ADMIN">Administrator</option></select>
 
             <button type="submit">Save user</button>
         </form>

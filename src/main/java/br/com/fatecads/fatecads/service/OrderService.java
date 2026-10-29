@@ -19,13 +19,30 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private br.com.fatecads.fatecads.repository.StudentRepository studentRepository;
+
     //Method to create the order
+    @org.springframework.transaction.annotation.Transactional
     public Order orderCreate(Order order){
+        if (order.getItem() == null || order.getItem().isEmpty() || order.getItem().size() > 100)
+            throw new IllegalArgumentException("An order must contain between 1 and 100 items.");
+        if (order.getStudent() == null || order.getStudent().getStudentId() == null)
+            throw new IllegalArgumentException("Select a student.");
+        order.setStudent(studentRepository.findById(order.getStudent().getStudentId())
+                .orElseThrow(() -> new IllegalArgumentException("Student not found.")));
+        order.setOrderId(null);
+        order.setUser(null);
         order.setOrderDate(LocalDate.now());
         for(ItemOfOrder item : order.getItem()){
-            Product product = productRepository.findById(item.getProduct().getProductId()).orElseThrow(() -> new RuntimeException("Product not found"));
+            if (item == null || item.getProduct() == null || item.getProduct().getProductId() == null)
+                throw new IllegalArgumentException("Select a valid product.");
+            ShoppingCart.checkQuantity(item.getAmount());
+            item.setItemId(null);
+            Product product = productRepository.findById(item.getProduct().getProductId())
+                    .orElseThrow(() -> new IllegalArgumentException("Product not found."));
             item.setProduct(product);
-            item.setPrice(product.getProductPrice());
+            item.setPrice(ShoppingCart.price(product).doubleValue());
             item.subTotalUpdate();
             item.setOrder(order);
         }

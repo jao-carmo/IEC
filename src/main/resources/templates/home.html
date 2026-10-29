@@ -14,12 +14,17 @@
 <main class="container app-shell fade-in-up">
     <header class="top-nav home-nav glass-panel">
         <div class="home-nav-brand"><p class="eyebrow">FatecADS</p><strong class="brand-title">Academic Workspace</strong></div>
-        <nav class="home-nav-links" aria-label="Academic records">
+        <nav th:if="${isAdmin}" class="home-nav-links" aria-label="Academic records">
             <a class="nav-chip" th:href="@{/student/list}">Students</a><a class="nav-chip" th:href="@{/course/list}">Courses</a><a class="nav-chip" th:href="@{/professor/list}">Professors</a><a class="nav-chip" th:href="@{/subject/list}">Subjects</a>
         </nav>
-        <nav class="home-nav-actions" aria-label="Operational records"><a class="button-link button-link-ghost" th:href="@{/product/list}">Products</a><a class="button-link button-link-ghost" th:href="@{/order/list}">Orders</a><a class="button-link" th:href="@{/order/create}">New order</a></nav>
-    </header>
-    <section class="hero-grid">
+        <nav th:if="${isAdmin}" class="home-nav-actions" aria-label="Operational records"><a class="button-link button-link-ghost" th:href="@{/product/list}">Products</a><a class="button-link button-link-ghost" th:href="@{/order/list}">Orders</a><a class="button-link" th:href="@{/order/create}">New order</a></nav>
+    <nav th:unless="${isAdmin}" class="actions" aria-label="Shopping"><a class="button-link" th:href="@{/product/list}">Browse products</a><a class="button-link button-link-ghost" th:href="@{/cart}">Shopping cart</a><a class="nav-chip" th:href="@{/purchases}">My orders</a></nav></header><section th:unless="${isAdmin}" class="hero-card hero-card-xl"><p class="eyebrow">Your personal workspace</p><h1 class="page-title">Find what you need.</h1><p class="subtitle">Explore our catalog, build your shopping cart, and keep track of your orders in one place.</p><div class="actions mt-20"><a class="button-link" th:href="@{/product/list}">Explore the catalog</a><a class="button-link button-link-ghost" th:href="@{/purchases}">View my orders</a></div></section><nav th:if="${isAdmin}" class="actions" aria-label="Administration"><a class="button-link" th:href="@{/users/list}">Manage users</a><a class="button-link button-link-ghost" th:href="@{/item-of-order/list}">Order items</a><a class="nav-chip" th:href="@{/cart}">Shopping cart</a><a class="nav-chip" th:href="@{/purchases}">My orders</a></nav>
+    <section th:if="${academicStudent != null}" class="hero-card academic-overview" aria-labelledby="academic-title">
+        <div><p class="eyebrow">My academic profile</p><h2 id="academic-title" class="side-note-title" th:text="${academicStudent.fullName}"></h2><p class="text-muted" th:text="${'Registration: ' + academicStudent.registrationNumber}"></p></div>
+        <dl><div><dt>Assigned course</dt><dd th:text="${academicStudent.course != null ? academicStudent.course.courseName : 'Not assigned'}"></dd></div><div><dt>Academic status</dt><dd><span class="badge" th:classappend="${academicStudent.academicStatus?.name() == 'COMPLETED' ? 'badge-success' : 'badge-progress'}" th:text="${academicStudent.academicStatus?.label ?: 'In progress'}"></span></dd></div></dl>
+    </section>
+    <section th:if="${academicProfessor != null}" class="hero-card academic-overview"><div><p class="eyebrow">My teaching profile</p><h2 class="side-note-title" th:text="${academicProfessor.fullName}"></h2></div><dl><div><dt>Registration</dt><dd th:text="${academicProfessor.RM}"></dd></div><div><dt>Graduation</dt><dd th:text="${academicProfessor.graduation}"></dd></div></dl></section>
+    <section th:if="${isAdmin}" class="hero-grid">
         <article class="hero-card hero-card-xl">
             <p class="eyebrow">Research administration</p>
             <h1 class="page-title">A clear workspace for academic operations.</h1>
@@ -29,7 +34,7 @@
         </article>
         <aside class="metric-panel" aria-label="Workspace overview"><p class="eyebrow">Workspace overview</p><div class="metric-stack"><div class="metric-card"><span class="metric-label">Academic data</span><strong class="metric-value">Centralized</strong><small>People and curriculum in one place</small></div><div class="metric-card"><span class="metric-label">Operational flow</span><strong class="metric-value">Focused</strong><small>Orders with a guided creation flow</small></div><div class="metric-card"><span class="metric-label">Interface</span><strong class="metric-value">Accessible</strong><small>Keyboard and responsive friendly</small></div></div></aside>
     </section>
-    <section class="card-grid" aria-label="Quick actions"><a class="stat-card" th:href="@{/student/list}"><span class="stat-label">Academic records</span><strong class="stat-value">Students and staff</strong></a><a class="stat-card" th:href="@{/subject/list}"><span class="stat-label">Curriculum</span><strong class="stat-value">Courses and subjects</strong></a><a class="stat-card" th:href="@{/order/list}"><span class="stat-label">Operations</span><strong class="stat-value">Products and orders</strong></a></section>
+    <section th:if="${isAdmin}" class="card-grid" aria-label="Quick actions"><a class="stat-card" th:href="@{/student/list}"><span class="stat-label">Academic records</span><strong class="stat-value">Students and staff</strong></a><a class="stat-card" th:href="@{/subject/list}"><span class="stat-label">Curriculum</span><strong class="stat-value">Courses and subjects</strong></a><a class="stat-card" th:href="@{/order/list}"><span class="stat-label">Operations</span><strong class="stat-value">Products and orders</strong></a></section>
 </main>
 </body>
 </html>

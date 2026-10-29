@@ -22,7 +22,7 @@
                 <p class="eyebrow">Smart form</p>
                 <h1 class="page-title">Student registration</h1>
             </div>
-            <div class="actions">
+            <div class="actions"><a class="button-link button-link-ghost" th:href="@{/users/list}">Manage users</a>
                 <a class="button-link button-link-ghost" th:href="@{/student/list}">Back to list</a>
             </div>
         </div>
@@ -50,7 +50,7 @@
             <input id="fullName" type="text" th:field="*{fullName}" maxlength="40" required autocomplete="name" placeholder="Example: Maria Silva Santos">
 
             <label for="email">E-mail</label>
-            <input id="email" type="email" th:field="*{email}" maxlength="100" autocomplete="email" placeholder="nome@dominio.com">
+            <input id="email" type="email" th:field="*{email}" maxlength="100" autocomplete="email" placeholder="name@example.com">
 
             <label for="phone">Phone</label>
             <input id="phone" type="text" th:field="*{phone}" maxlength="15" required autocomplete="tel" placeholder="(11) 99999-9999">
@@ -73,9 +73,10 @@
                 </option>
 
             </select>
+            <label for="academicStatus">Academic status</label><select id="academicStatus" th:field="*{academicStatus}" required><option value="ENROLLED">In progress</option><option value="COMPLETED">Completed</option></select><th:block th:replace="~{fragments/academicAccount :: account(${student}, true)}"/>
             <button type="submit">Save student</button>
         </form>
     </section>
 </main>
-</body>
+<script th:src="@{/js/academic-account.js}" defer></script></body>
 </html>

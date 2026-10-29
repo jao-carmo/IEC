@@ -22,17 +22,39 @@ public class StudentController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private br.com.fatecads.fatecads.service.AcademicRegistrationService registration;
+
+    @InitBinder("student")
+    public void fields(org.springframework.web.bind.WebDataBinder binder) {
+        binder.setAllowedFields("studentId", "fullName", "email", "phone", "address", "cpf", "registrationNumber", "course", "academicStatus");
+    }
+
     // Method to save a student.
     @PostMapping("/save")
-    public String save(@ModelAttribute Student student) {
-        studentService.save(student);
-        return "redirect:/student/list";
+    public String save(@ModelAttribute Student student,
+            @RequestParam(defaultValue = "false") boolean createAccount,
+            @RequestParam(defaultValue = "") String accountLogin,
+            @RequestParam(defaultValue = "") String accountPassword, Model model) {
+        try {
+            registration.saveStudent(student, createAccount, accountLogin, accountPassword);
+            return "redirect:/student/list";
+        } catch (IllegalArgumentException ex) {
+            student.setAccount(student.getStudentId() == null ? null : java.util.Optional.ofNullable(studentService.findById(student.getStudentId())).map(Student::getAccount).orElse(null));
+            model.addAttribute("errorMessage", ex.getMessage());
+            model.addAttribute("course", courseService.findAll());
+            model.addAttribute("accountLogin", accountLogin);
+            return "student/studentForm";
+        }
     }
 
     // Method to list all student records.
     @GetMapping("/list")
     public String list(Model model) {
-        model.addAttribute("student", studentService.findAll());
+        var records = studentService.findAll();
+        model.addAttribute("student", records);
+        model.addAttribute("enrolledCount", records.stream().filter(s -> s.getAcademicStatus() != br.com.fatecads.fatecads.entity.AcademicStatus.COMPLETED).count());
+        model.addAttribute("completedCount", records.stream().filter(s -> s.getAcademicStatus() == br.com.fatecads.fatecads.entity.AcademicStatus.COMPLETED).count());
         return "student/studentList";
     }
 
@@ -45,7 +67,7 @@ public class StudentController {
     }
 
     // Method to delete a student record by ID.
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
         studentService.deleteById(id);
         return "redirect:/student/list";
@@ -55,6 +77,7 @@ public class StudentController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         Student student = studentService.findById(id);
+        if (student == null) throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND);
         model.addAttribute("student", student);
         model.addAttribute("course", courseService.findAll());
         return "student/studentForm";

@@ -101,12 +101,15 @@
 
 <script>
     let items = [];
+    function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
+    }
 
     function addItem() {
         let productInput = document.getElementById("product").value;
         let amount = Number(document.getElementById("amount").value);
 
-        if (!productInput || amount <= 0) {
+        if (!productInput || !Number.isInteger(amount) || amount < 1 || amount > 999) {
             alert("Please fill in the product and amount correctly!");
             return;
         }
@@ -183,10 +186,10 @@
             table.innerHTML += `
                 <tr>
                     <td class="order-product-cell">
-                        ${item.imagePath ? `<img src="${item.imagePath}" alt="${item.productName}" class="product-image">` : `<span class="text-muted">No image</span>`}
-                        <span>${item.productName}</span>
+                        ${item.imagePath ? `<img src="${escapeHtml(item.imagePath)}" alt="${escapeHtml(item.productName)}" class="product-image">` : `<span class="text-muted">No image</span>`}
+                        <span>${escapeHtml(item.productName)}</span>
                     </td>
-                    <td><input class="amount-input" type="number" min="1" step="1" value="${item.amount}" onchange="updateAmount(${index}, this.value)" aria-label="Amount for ${item.productName}"></td>
+                    <td><input class="amount-input" type="number" min="1" step="1" value="${item.amount}" onchange="updateAmount(${index}, this.value)" aria-label="Amount for ${escapeHtml(item.productName)}"></td>
                     <td>$ ${item.price.toFixed(2)}</td>
                     <td>$ ${item.subtotal.toFixed(2)}</td>
                     <td>
@@ -203,7 +206,7 @@
 
     function updateAmount(index, value) {
         let amount = Number(value);
-        if (!Number.isInteger(amount) || amount <= 0) {
+        if (!Number.isInteger(amount) || amount < 1 || amount > 999) {
             alert("Amount must be a whole number greater than zero.");
             renderTable();
             return;

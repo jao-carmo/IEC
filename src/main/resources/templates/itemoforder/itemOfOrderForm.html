@@ -45,9 +45,9 @@
             <input type="hidden" th:field="*{itemId}">
 
             <label for="order">Order</label>
-            <select id="order" th:field="*{order}">
+            <select id="order" th:field="*{order}" required>
                 <option value="">No order selected</option>
-                <option th:each="order : ${orders}"
+                <option th:each="order : ${orders}" th:if="${order.user == null}"
                         th:value="${order.orderId}"
                         th:text="${'Order #' + order.orderId}">
                     Order
@@ -67,9 +67,7 @@
             <label for="amount">Amount</label>
             <input id="amount" type="number" min="1" step="1" th:field="*{amount}" required placeholder="Example: 2">
 
-            <label for="price">Price</label>
-            <input id="price" type="number" min="0" step="0.01" th:field="*{price}" required placeholder="Example: 149.90">
-
+            <p class="text-muted">The current catalog price is applied automatically.</p>
             <button type="submit">Save order item</button>
         </form>
     </section>

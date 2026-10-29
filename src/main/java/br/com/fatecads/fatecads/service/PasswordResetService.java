@@ -32,6 +32,9 @@ public class PasswordResetService {
     @Autowired
     private ObjectProvider<JavaMailSender> mailSenderProvider;
 
+    @org.springframework.beans.factory.annotation.Value("${spring.mail.from:noreply@fatecads.local}")
+    private String mailFrom;
+
     public boolean requestReset(String email, String appUrl) {
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isEmpty()) {
@@ -40,7 +43,7 @@ public class PasswordResetService {
 
         User user = userOptional.get();
         String token = generateToken();
-        user.setResetToken(token);
+        user.setResetToken(hash(token));
         user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(TOKEN_TTL_MINUTES));
         userRepository.save(user);
 
@@ -48,8 +51,11 @@ public class PasswordResetService {
         return true;
     }
 
+    @org.springframework.transaction.annotation.Transactional
     public boolean resetPassword(String token, String newPassword) {
-        Optional<User> userOptional = userRepository.findByResetToken(token);
+        if (token == null || token.isBlank() || newPassword == null || newPassword.length() < 12
+                || newPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8).length > 72) return false;
+        Optional<User> userOptional = userRepository.findByResetToken(hash(token));
         if (userOptional.isEmpty()) {
             return false;
         }
@@ -75,6 +81,7 @@ public class PasswordResetService {
 
         String resetLink = appUrl + "/reset-password?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(mailFrom);
         message.setTo(email);
         message.setSubject("Password reset request");
         message.setText("We received a password reset request.\n\n" +
@@ -92,5 +99,14 @@ public class PasswordResetService {
         byte[] bytes = new byte[TOKEN_BYTES];
         new SecureRandom().nextBytes(bytes);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    }
+
+    private String hash(String token) {
+        try {
+            return java.util.HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256")
+                    .digest(token.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+        } catch (java.security.NoSuchAlgorithmException ex) {
+            throw new IllegalStateException("SHA-256 is unavailable", ex);
+        }
     }
 }

@@ -15,20 +15,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/login",
+                                "/",
+                                "/error",
                                 "/fatecads",
                                 "/forgot-password",
                                 "/reset-password",
                                 "/css/**",
+                                "/js/**",
                                 "/uploads/**",
-                        "/images/**",
+                                "/images/**",
                                 "/users/create",
                                 "/users/save")
                         .permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/home", "/product/list", "/cart", "/cart/**", "/purchases", "/purchases/**").authenticated()
+                        .anyRequest().hasRole("ADMIN"))
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/home", true)

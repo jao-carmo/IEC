@@ -22,7 +22,7 @@
                 <p class="eyebrow">Smart form</p>
                 <h1 class="page-title">Professor registration</h1>
             </div>
-            <div class="actions">
+            <div class="actions"><a class="button-link button-link-ghost" th:href="@{/users/list}">Manage users</a>
                 <a class="button-link button-link-ghost" th:href="@{/professor/list}">Back to list</a>
             </div>
         </div>
@@ -58,9 +58,10 @@
             <label for="rm">Registration (RM)</label>
             <input id="rm" type="text" th:field="*{RM}" required placeholder="Example: RM2026001">
 
+            <th:block th:replace="~{fragments/academicAccount :: account(${professor}, false)}"/>
             <button type="submit">Save professor</button>
         </form>
     </section>
 </main>
-</body>
+<script th:src="@{/js/academic-account.js}" defer></script></body>
 </html>

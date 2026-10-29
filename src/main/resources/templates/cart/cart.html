@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>FatecADS | Shopping cart</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
+<body><main class="container app-shell fade-in-up">
+    <header class="top-nav store-nav"><a class="store-brand" th:href="@{/product/list}"><span class="brand-mark" aria-hidden="true">F.</span><span><strong>Campus store</strong><small>Your everyday essentials</small></span></a><nav class="actions" aria-label="Shopping navigation"><a class="nav-chip" th:href="@{/home}">Workspace</a><a class="nav-chip" th:href="@{/purchases}">My orders</a><a class="button-link button-link-ghost" th:href="@{/product/list}">Continue shopping</a></nav></header>
+    <section class="hero-card"><p class="eyebrow">One step closer</p><h1 class="page-title">Good choices, all together.</h1><p class="subtitle">A few essentials for your next chapter. Review your cart before making it official.</p></section>
+    <p th:if="${successMessage}" th:text="${successMessage}" class="badge badge-success" role="status"></p><p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message" role="alert"></p>
+    <section th:if="${#lists.isEmpty(lines)}" class="hero-card empty-state"><span class="brand-mark" style="margin:0 auto" aria-hidden="true">F.</span><h2>Your cart is waiting for a good idea.</h2><p>Start with something for your desk, your classes, or your everyday routine.</p><a class="button-link" th:href="@{/product/list}">Explore the collection</a></section>
+    <div class="cart-layout" th:unless="${#lists.isEmpty(lines)}">
+        <section class="cart-items" aria-label="Shopping cart items">
+            <article class="cart-line" th:each="line : ${lines}">
+                <img th:if="${line.imagePath != null}" th:src="@{${line.imagePath}}" th:alt="${line.description}" class="cart-line-image"><div th:unless="${line.imagePath != null}" class="cart-line-image product-placeholder" aria-hidden="true">F.</div>
+                <div><div class="page-header"><div><h2 th:text="${line.description}"></h2><span class="text-muted" th:text="${'$ ' + #numbers.formatDecimal(line.price, 1, 'COMMA', 2, 'POINT') + ' / unit'}"></span></div><strong th:text="${'$ ' + #numbers.formatDecimal(line.subtotal, 1, 'COMMA', 2, 'POINT')}"></strong></div>
+                    <p th:unless="${line.available}" class="error-message">This product is unavailable. Remove it to continue.</p>
+                    <div class="actions"><form class="actions" th:action="@{/cart/update}" method="post"><input type="hidden" name="productId" th:value="${line.productId}"><label class="sr-only" th:for="${'quantity-' + line.productId}" th:text="${'Quantity for ' + line.description}">Quantity</label><input class="amount-input" th:id="${'quantity-' + line.productId}" name="quantity" type="number" min="1" max="999" step="1" th:value="${line.quantity}" required><button type="submit" class="table-action">Update</button></form><form th:action="@{/cart/remove}" method="post"><input type="hidden" name="productId" th:value="${line.productId}"><button type="submit" class="table-action table-action-danger" th:aria-label="${'Remove ' + line.description}">Remove</button></form></div>
+                </div>
+            </article>
+            <form th:action="@{/cart/clear}" method="post"><button class="table-action table-action-danger" type="submit">Clear cart</button></form>
+        </section>
+        <aside class="hero-card cart-summary" aria-labelledby="summary-title"><p class="eyebrow">Almost yours</p><h2 id="summary-title" class="side-note-title">Order summary</h2><dl><div><dt>Different products</dt><dd th:text="${#lists.size(lines)}"></dd></div><div><dt>Order total</dt><dd class="shop-price" th:text="${'$ ' + #numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}"></dd></div></dl><form th:action="@{/cart/checkout}" method="post"><button type="submit" th:disabled="${!canCheckout}">Confirm order &#8599;</button></form><p class="summary-note">Prices are checked again when you confirm. This academic demo records your order without charging a payment.</p><a class="nav-chip" th:href="@{/product/list}">Keep exploring</a></aside>
+    </div>
+    <footer class="store-footer"><span><strong>FatecADS</strong> / Campus store</span><span>Your cart stays with this session.</span></footer>
+</main></body></html>

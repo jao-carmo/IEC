@@ -28,6 +28,17 @@ public class OrderController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private br.com.fatecads.fatecads.repository.OrderRepository orderRepository;
+
+    @GetMapping("/{id}")
+    public String detail(@PathVariable Integer id, Model model) {
+        model.addAttribute("order", orderRepository.findById(id).orElseThrow(() ->
+                new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND)));
+        model.addAttribute("backToOrders", "/order/list");
+        return "cart/receipt";
+    }
+
     @PostMapping
     @ResponseBody
     public ResponseEntity<Void> save(@RequestBody Order order) {

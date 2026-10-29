@@ -18,6 +18,18 @@ public class StudentService {
         if (student == null) {
             return;
         }
+        if (student.getCpf() != null) student.setCpf(student.getCpf().replaceAll("\\D", ""));
+        if (student.getCpf() == null || student.getCpf().length() != 11)
+            throw new IllegalArgumentException("CPF must contain 11 digits.");
+        if (student.getPhone() != null) student.setPhone(student.getPhone().replaceAll("\\D", ""));
+        RecordValidation.text(student.getFullName(), 40, "Full name");
+        RecordValidation.text(student.getAddress(), 100, "Address");
+        RecordValidation.text(student.getRegistrationNumber(), 255, "Registration number");
+        if (student.getPhone() == null || student.getPhone().length() < 10 || student.getPhone().length() > 11)
+            throw new IllegalArgumentException("Phone must contain 10 or 11 digits.");
+        if (student.getEmail() != null && !student.getEmail().isBlank()
+                && (student.getEmail().length() > 100 || !student.getEmail().matches("[^\\s@]+@[^\\s@]+\\.[^\\s@]+")))
+            throw new IllegalArgumentException("Enter a valid email.");
         studentRepository.save(student);
     }
 

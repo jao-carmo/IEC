@@ -18,6 +18,12 @@ public class ProfessorService {
         if (professor == null) {
             return;
         }
+        if (professor.getPhone() != null) professor.setPhone(professor.getPhone().replaceAll("\\D", ""));
+        if (professor.getPhone() == null || professor.getPhone().length() < 10 || professor.getPhone().length() > 11)
+            throw new IllegalArgumentException("Phone must contain 10 or 11 digits.");
+        RecordValidation.text(professor.getFullName(), 40, "Full name");
+        RecordValidation.text(professor.getGraduation(), 100, "Graduation");
+        RecordValidation.text(professor.getRM(), 255, "RM");
         professorRepository.save(professor);
     }
 

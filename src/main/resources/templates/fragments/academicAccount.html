@@ -1,0 +1,24 @@
+﻿<main xmlns:th="http://www.thymeleaf.org">
+    <fieldset th:fragment="account(record, studentMode)" class="account-section">
+        <legend>System access</legend>
+        <th:block th:if="${record.account == null}">
+            <p class="text-muted">Create a linked User account so this person can sign in. Academic records can also be saved without a login.</p>
+            <label class="check-label"><input type="checkbox" id="create-account" name="createAccount" value="true" aria-controls="account-fields"> Create login account</label>
+            <div id="account-fields" class="account-fields">
+                <th:block th:unless="${studentMode}">
+                    <label for="account-email">Account email</label>
+                    <input id="account-email" type="email" name="accountEmail" maxlength="40" th:value="${accountEmail}" autocomplete="email" placeholder="name@example.com">
+                </th:block>
+                <label for="account-login">Login</label>
+                <input id="account-login" name="accountLogin" maxlength="40" minlength="3" th:value="${accountLogin}" autocomplete="off" placeholder="Example: alex.morgan">
+                <label for="account-password">Initial password</label>
+                <input id="account-password" name="accountPassword" type="password" minlength="12" maxlength="72" autocomplete="new-password" placeholder="At least 12 characters">
+            </div>
+            <p class="text-muted" th:if="${studentMode}">The student's email is used for the login account (maximum 40 characters).</p>
+        </th:block>
+        <div th:if="${record.account != null}" class="actions">
+            <span class="badge badge-success" th:text="${'Linked login: ' + record.account.login}"></span>
+            <a class="button-link button-link-ghost" th:href="@{/users/edit/{id}(id=${record.account.userId})}">Manage account</a>
+        </div>
+    </fieldset>
+</main>

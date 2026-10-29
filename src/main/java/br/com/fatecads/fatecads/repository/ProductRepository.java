@@ -4,5 +4,6 @@ import br.com.fatecads.fatecads.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
+    java.util.Optional<Product> findFirstByProductDescriptionIgnoreCase(String description);
 
 }

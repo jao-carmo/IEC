@@ -40,4 +40,12 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "courseId_fk")
     private Course course;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "varchar(20) default 'ENROLLED'")
+    private AcademicStatus academicStatus = AcademicStatus.ENROLLED;
+
+    @OneToOne
+    @JoinColumn(name = "account_id", unique = true)
+    private User account;
 }

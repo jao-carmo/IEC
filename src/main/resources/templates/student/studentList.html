@@ -23,7 +23,7 @@
                 <h1 class="page-title">Student management</h1>
                 <p class="subtitle">Review, edit, and maintain records with enterprise clarity and data-driven readability.</p>
             </div>
-            <div class="actions">
+            <div class="actions"><a class="button-link button-link-ghost" th:href="@{/users/list}">Manage users</a>
                 <a class="button-link button-link-glow" th:href="@{/student/new}">New student</a>
                 <a class="button-link button-link-ghost" th:href="@{/home}">Home page</a>
             </div>
@@ -36,12 +36,12 @@
             <p class="stat-value" th:text="${#lists.size(student)}">0</p>
         </article>
         <article class="stat-card neo-surface">
-            <p class="stat-label">Work mode</p>
-            <p class="stat-value">Data-first</p>
+            <p class="stat-label">In progress</p>
+            <p class="stat-value" th:text="${enrolledCount}">0</p>
         </article>
         <article class="stat-card neo-surface">
-            <p class="stat-label">Interface</p>
-            <p class="stat-value">Responsive</p>
+            <p class="stat-label">Completed</p>
+            <p class="stat-value" th:text="${completedCount}">0</p>
         </article>
     </section>
 
@@ -55,13 +55,13 @@
                 <th>Address</th>
                 <th>CPF</th>
                 <th>RA</th>
-                <th>Course</th>
-                <th colspan="2">Actions</th>
+                <th>Course</th><th>Academic status</th>
+                <th>Login account</th><th colspan="2">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(student)}">
-                <td colspan="9" class="empty-state">No students registered yet. Click "New student" to get started.</td>
+                <td colspan="11" class="empty-state">No students registered yet. Click "New student" to get started.</td>
             </tr>
             <tr th:each="student : ${student}">
                 <td th:text="${student.fullName}">*</td>
@@ -71,8 +71,8 @@
                 <td th:text="${student.cpf}">*</td>
                 <td th:text="${student.registrationNumber}">*</td>
                 <td th:text="${student.course != null ? student.course.courseName : '-'}">*</td>
-                <td><a class="table-action" th:href="@{/student/edit/{studentId}(studentId=${student.studentId})}">Edit</a></td>
-                <td><a class="table-action table-action-danger" th:href="@{/student/delete/{studentId}(studentId=${student.studentId})}">Delete</a></td>
+                <td><span class="badge" th:classappend="${student.academicStatus?.name() == 'COMPLETED' ? 'badge-success' : 'badge-progress'}" th:text="${student.academicStatus?.label ?: 'In progress'}"></span></td><td><a class="nav-chip" th:if="${student.account != null}" th:href="@{/users/edit/{id}(id=${student.account.userId})}" th:text="${student.account.login}"></a><a class="nav-chip" th:unless="${student.account != null}" th:href="@{/student/edit/{id}(id=${student.studentId})}">Create login</a></td><td><a class="table-action" th:href="@{/student/edit/{studentId}(studentId=${student.studentId})}">Edit</a></td>
+                <td><form th:action="@{/student/delete/{studentId}(studentId=${student.studentId})}" method="post"><button type="submit" class="table-action table-action-danger">Delete</button></form></td>
             </tr>
             </tbody>
         </table>

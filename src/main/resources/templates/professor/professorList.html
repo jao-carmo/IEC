@@ -23,7 +23,7 @@
                 <h1 class="page-title">Professor management</h1>
                 <p class="subtitle">Review, edit, and maintain professor records with enterprise clarity and data-driven readability.</p>
             </div>
-            <div class="actions">
+            <div class="actions"><a class="button-link button-link-ghost" th:href="@{/users/list}">Manage users</a>
                 <a class="button-link button-link-glow" th:href="@{/professor/new}">New professor</a>
                 <a class="button-link button-link-ghost" th:href="@{/home}">Home page</a>
             </div>
@@ -53,20 +53,20 @@
                 <th>Phone</th>
                 <th>Graduation</th>
                 <th>RM</th>
-                <th colspan="2">Actions</th>
+                <th>Login account</th><th colspan="2">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(professor)}">
-                <td colspan="6" class="empty-state">No professors registered yet. Click "New professor" to get started.</td>
+                <td colspan="7" class="empty-state">No professors registered yet. Click "New professor" to get started.</td>
             </tr>
             <tr th:each="professor : ${professor}">
                 <td th:text="${professor.fullName}">*</td>
                 <td th:text="${professor.phone}">*</td>
                 <td th:text="${professor.graduation}">*</td>
                 <td th:text="${professor.RM}">*</td>
-                <td><a class="table-action" th:href="@{/professor/edit/{professorId}(professorId=${professor.professorId})}">Edit</a></td>
-                <td><a class="table-action table-action-danger" th:href="@{/professor/delete/{professorId}(professorId=${professor.professorId})}">Delete</a></td>
+                <td><a class="nav-chip" th:if="${professor.account != null}" th:href="@{/users/edit/{id}(id=${professor.account.userId})}" th:text="${professor.account.login}"></a><a class="nav-chip" th:unless="${professor.account != null}" th:href="@{/professor/edit/{id}(id=${professor.professorId})}">Create login</a></td><td><a class="table-action" th:href="@{/professor/edit/{professorId}(professorId=${professor.professorId})}">Edit</a></td>
+                <td><form th:action="@{/professor/delete/{professorId}(professorId=${professor.professorId})}" method="post"><button type="submit" class="table-action table-action-danger">Delete</button></form></td>
             </tr>
             </tbody>
         </table>

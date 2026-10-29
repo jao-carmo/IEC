@@ -17,6 +17,11 @@ public class SubjectService {
         if (subject == null) {
             return;
         }
+        RecordValidation.text(subject.getSubjectName(), 100, "Subject name");
+        RecordValidation.text(subject.getCode(), 15, "Subject code");
+        RecordValidation.workload(subject.getWorkloadHours());
+        if (subject.getCourse() == null || subject.getProfessor() == null)
+            throw new IllegalArgumentException("Select a course and professor.");
         subjectRepository.save(subject);
     }
 

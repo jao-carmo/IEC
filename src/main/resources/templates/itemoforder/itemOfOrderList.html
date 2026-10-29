@@ -65,10 +65,10 @@
                 <td th:text="${itemOfOrder.order != null ? itemOfOrder.order.orderId : '-'}">*</td>
                 <td th:text="${itemOfOrder.product != null ? itemOfOrder.product.productDescription : '-'}">*</td>
                 <td th:text="${itemOfOrder.amount}">*</td>
-                <td th:text="${#numbers.formatDecimal(itemOfOrder.price, 1, 2)}">*</td>
-                <td th:text="${#numbers.formatDecimal(itemOfOrder.subtotal, 1, 2)}">*</td>
+                <td th:text="${#numbers.formatDecimal(itemOfOrder.price, 1, 'COMMA', 2, 'POINT')}">*</td>
+                <td th:text="${#numbers.formatDecimal(itemOfOrder.subtotal, 1, 'COMMA', 2, 'POINT')}">*</td>
                 <td><a class="table-action" th:href="@{/item-of-order/edit/{itemId}(itemId=${itemOfOrder.itemId})}">Edit</a></td>
-                <td><a class="table-action table-action-danger" th:href="@{/item-of-order/delete/{itemId}(itemId=${itemOfOrder.itemId})}">Delete</a></td>
+                <td><form th:action="@{/item-of-order/delete/{itemId}(itemId=${itemOfOrder.itemId})}" method="post"><button type="submit" class="table-action table-action-danger">Delete</button></form></td>
             </tr>
             </tbody>
         </table>

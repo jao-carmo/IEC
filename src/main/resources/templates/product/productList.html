@@ -1,81 +1,31 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <link rel="stylesheet" th:href="@{/css/app.css}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>FatecADS | Products</title>
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>FatecADS | Campus store</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
 <body>
-<div class="bg-orb orb-one"></div>
-<div class="bg-orb orb-two"></div>
-<form class="signout-fixed" th:action="@{/logout}" method="post">
-    <input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-    <button type="submit" class="button-link table-action-danger">Sign out</button>
-</form>
-
 <main class="container app-shell fade-in-up">
-    <section class="hero-card hero-card-compact glass-panel">
-        <p class="eyebrow">Inventory dashboard</p>
-        <div class="page-header">
-            <div>
-                <h1 class="page-title">Product management</h1>
-                <p class="subtitle">Review, edit, and maintain product records with clean inventory visibility.</p>
-            </div>
-            <div class="actions">
-                <a class="button-link button-link-glow" th:href="@{/product/new}">New product</a>
-                <a class="button-link button-link-ghost" th:href="@{/home}">Home page</a>
-            </div>
+    <header class="top-nav store-nav">
+        <a class="store-brand" th:href="@{/product/list}"><span class="brand-mark" aria-hidden="true">F.</span><span><strong>Campus store</strong><small>By FatecADS</small></span></a>
+        <nav class="actions" aria-label="Store navigation"><a class="nav-chip" th:href="@{/home}">Workspace</a><a class="nav-chip" th:href="@{/purchases}">My orders</a><a class="button-link" th:href="@{/cart}">Shopping cart <span aria-hidden="true">&#8599;</span></a><form th:action="@{/logout}" method="post"><button class="button-link button-link-ghost" type="submit">Sign out</button></form></nav>
+    </header>
+    <section class="store-hero">
+        <div><p class="eyebrow">Everyday tools. Bigger possibilities.</p><h1 class="page-title">A little upgrade<br>for your next idea.</h1><p class="subtitle">Thoughtful essentials for your desk, your classes, and everything in between.</p><a class="button-link" href="#catalog">Explore the collection <span aria-hidden="true">&#8595;</span></a><div class="hero-pill-row"><span class="hero-pill">Study essentials</span><span class="hero-pill">Made for campus life</span></div></div>
+        <div class="store-hero-art" aria-hidden="true"><div class="hero-disc"></div><img class="hero-monitor" th:src="@{/images/demo/monitor.svg}" alt=""><img class="hero-headphones" th:src="@{/images/demo/headphones.svg}" alt=""><span class="art-note">Make room for<br><strong>your next big thing.</strong></span></div>
+    </section>
+    <section th:if="${isAdmin}" class="store-admin" aria-label="Catalog administration"><div><span class="badge">Administrator</span><span class="text-muted">Maintain products while exploring the store.</span></div><a class="button-link button-link-ghost" th:href="@{/product/new}">New product</a></section>
+    <section id="catalog" aria-labelledby="collection-title">
+        <div class="page-header collection-heading"><div><p class="eyebrow">The collection</p><h2 id="collection-title" class="side-note-title">Find your everyday favorites.</h2></div><span class="text-muted" th:text="${#lists.size(products) + ' of ' + productCount + ' products'}"></span></div>
+        <form class="catalog-filters" th:action="@{/product/list}" method="get" role="search">
+            <div><label for="catalog-query">Search the collection</label><input id="catalog-query" type="search" name="q" th:value="${q}" placeholder="Search products or brands" maxlength="100"></div>
+            <div><label for="catalog-budget">Price range</label><select id="catalog-budget" name="budget"><option value="all" th:selected="${budget == 'all'}">All prices</option><option value="under200" th:selected="${budget == 'under200'}">Under $200</option><option value="200plus" th:selected="${budget == '200plus'}">$200 and above</option></select></div>
+            <div><label for="catalog-sort">Sort by</label><select id="catalog-sort" name="sort"><option value="featured" th:selected="${sort == 'featured'}">Featured</option><option value="price-asc" th:selected="${sort == 'price-asc'}">Price: low to high</option><option value="price-desc" th:selected="${sort == 'price-desc'}">Price: high to low</option><option value="name" th:selected="${sort == 'name'}">Name: A to Z</option></select></div><button type="submit">Find products</button>
+        </form>
+        <div th:if="${#lists.isEmpty(products)}" class="hero-card empty-state"><h3>No products found</h3><p>Try a different search or explore the full collection.</p><a class="button-link button-link-ghost" th:href="@{/product/list}">Clear filters</a></div>
+        <div class="product-grid">
+            <article class="shop-product" th:each="product : ${products}">
+                <div class="shop-product-image"><img th:if="${product.imagePath != null}" th:src="@{${product.imagePath}}" th:alt="${product.productDescription}" loading="lazy"><span th:unless="${product.imagePath != null}" class="product-placeholder" aria-hidden="true">F.</span></div>
+                <div class="shop-product-body"><p class="eyebrow" th:text="${product.productBrand}"></p><h3 th:text="${product.productDescription}"></h3><p class="product-unit" th:text="${'Sold per ' + product.productUnit}"></p><div class="shop-product-bottom"><strong class="shop-price" th:text="${product.productPrice != null ? '$ ' + #numbers.formatDecimal(product.productPrice, 1, 'COMMA', 2, 'POINT') : 'Unavailable'}"></strong><form th:action="@{/cart/add}" method="post"><input type="hidden" name="productId" th:value="${product.productId}"><button type="submit" th:disabled="${product.productPrice == null}" th:aria-label="${'Add ' + product.productDescription + ' to cart'}">Add to cart</button></form></div><div class="shop-product-admin" th:if="${isAdmin}"><a class="nav-chip" th:href="@{/product/edit/{id}(id=${product.productId})}">Edit product</a><form th:action="@{/product/delete/{id}(id=${product.productId})}" method="post"><button type="submit" class="table-action table-action-danger" th:aria-label="${'Delete ' + product.productDescription}">Delete</button></form></div></div>
+            </article>
         </div>
     </section>
-
-    <section class="card-grid mt-20" aria-label="List indicators">
-        <article class="stat-card neo-surface">
-            <p class="stat-label">Total records</p>
-            <p class="stat-value" th:text="${#lists.size(products)}">0</p>
-        </article>
-        <article class="stat-card neo-surface">
-            <p class="stat-label">Catalog</p>
-            <p class="stat-value">Ready</p>
-        </article>
-        <article class="stat-card neo-surface">
-            <p class="stat-label">Interface</p>
-            <p class="stat-value">Responsive</p>
-        </article>
-    </section>
-
-    <section class="table-wrap table-wrap-glass mt-20 brutal-edge" aria-label="Product table">
-        <table class="data-table">
-            <thead>
-            <tr>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Unit</th>
-                <th>Brand</th>
-                <th colspan="2">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${#lists.isEmpty(products)}">
-                <td colspan="7" class="empty-state">No products registered yet. Click "New product" to get started.</td>
-            </tr>
-            <tr th:each="product : ${products}">
-                <td>
-                    <img th:if="${product.imagePath != null}" th:src="@{${product.imagePath}}" th:alt="${product.productDescription}" class="product-image">
-                    <span th:unless="${product.imagePath != null}" class="text-muted">No image</span>
-                </td>
-                <td th:text="${product.productDescription}">*</td>
-                <td th:text="${#numbers.formatDecimal(product.productPrice, 1, 2)}">*</td>
-                <td th:text="${product.productUnit}">*</td>
-                <td th:text="${product.productBrand}">*</td>
-                <td><a class="table-action" th:href="@{/product/edit/{productId}(productId=${product.productId})}">Edit</a></td>
-                <td><a class="table-action table-action-danger" th:href="@{/product/delete/{productId}(productId=${product.productId})}">Delete</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
-</main>
-</body>
-</html>
+    <footer class="store-footer"><span><strong>FatecADS</strong> / Campus store</span><span>Academic shopping demo. No payment is charged.</span></footer>
+</main></body></html>

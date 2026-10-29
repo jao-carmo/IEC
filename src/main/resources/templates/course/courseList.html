@@ -64,7 +64,7 @@
                 <td th:text="${course.period}">*</td>
                 <td th:text="${course.workloadHours}">*</td>
                 <td><a class="table-action" th:href="@{/course/edit/{courseId}(courseId=${course.courseId})}">Edit</a></td>
-                <td><a class="table-action table-action-danger" th:href="@{/course/delete/{courseId}(courseId=${course.courseId})}">Delete</a></td>
+                <td><form th:action="@{/course/delete/{courseId}(courseId=${course.courseId})}" method="post"><button type="submit" class="table-action table-action-danger">Delete</button></form></td>
             </tr>
             </tbody>
         </table>

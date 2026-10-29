@@ -29,6 +29,7 @@
         <p class="subtitle">Register product details with consistent naming, pricing, units, and brand information.</p>
     </section>
 
+    <p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message" role="alert"></p>
     <section class="form-layout mt-20">
         <aside class="side-note glass-panel">
             <p class="eyebrow">Best practices</p>
@@ -59,8 +60,8 @@
             <label for="image">Product image</label>
             <div>
                 <img th:if="${product.imagePath != null}" th:src="@{${product.imagePath}}" alt="Current product image" class="product-image product-image-preview">
-                <input type="file" id="image" name="image" accept="image/*">
-                <small class="text-muted">Choose an image from your computer or phone.</small>
+                <input type="file" id="image" name="image" accept="image/png,image/jpeg">
+                <small class="text-muted">PNG or JPEG only. Maximum 5 MB and 20 megapixels.</small>
             </div>
 
             <button type="submit">Save product</button>
